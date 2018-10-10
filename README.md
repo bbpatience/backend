@@ -12,12 +12,6 @@
 * 2
 * 3
 
-## ChangeNotes
-
-* Basic Structure (Restful API created)
-* 
-* 
-
 ## Contact and mailing list
 
 * bbpatience@gmail.com
