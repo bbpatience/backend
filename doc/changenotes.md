@@ -14,3 +14,5 @@
 * access authentication. spring security
 * multi-module
 * unique exception
+* db transaction
+* redis session
