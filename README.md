@@ -12,15 +12,19 @@
 * 2
 * 3
 
+## ChangeNotes
 
+* Basic Structure (Restful API created)
+* 
+* 
 
 ## Contact and mailing list
 
-* 28867105@qq.com
+* bbpatience@gmail.com
 
 
 ## Maintainers
 
 Walle is maintained by (A-Z):
 
--   Baibing
+-   Bing Bai
