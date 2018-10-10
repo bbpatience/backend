@@ -16,7 +16,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'walle'
+    baseName = 'com.walle'
     version =  '0.1.0'
 }
 

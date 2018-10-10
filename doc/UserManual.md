@@ -16,5 +16,5 @@
 2. CentOS
   * execute migration script to init db
   * copy jar package to desired machine
-  * java -jar walle-0.1.0.jar
+  * java -jar com.walle-0.1.0.jar
   * verify by typing in Browser http://{domain}:8080/misc/version
