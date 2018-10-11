@@ -41,4 +41,9 @@ public class UserController {
         logger.info("Get User All called.");
 		return userRepository.findAll();
 	}
+
+    @GetMapping(path="/exception")
+    public @ResponseBody void exception() throws Exception {
+        throw new IllegalAccessException("IllegalAccessException");
+    }
 }
