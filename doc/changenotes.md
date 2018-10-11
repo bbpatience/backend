@@ -1,14 +1,13 @@
 # ChangeNotes
 
 1. 2018.10.10  *Project Structure*
-2.   
+2. 2018.10.10  *DB migration (flyway)*
+3. 2018.10.11  *support Log4j2*
 
 
 
 
 ### ToDo List
-* mysql db migration. flyway
-* log system. log4j2
 * banner
 * db design
 * access authentication. spring security
@@ -16,3 +15,4 @@
 * unique exception
 * db transaction
 * redis session
+* unit test

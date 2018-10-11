@@ -26,18 +26,18 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compile.exclude module: 'spring-boot-starter-logging'
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-
-    // JPA Data (We are going to use Repositories, Entities, Hibernate, etc...)
+    compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
-
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'org.springframework.boot:spring-boot-starter-log4j2'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 

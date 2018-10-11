@@ -1,5 +1,7 @@
 package com.walle.cplatform.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,8 @@ import com.walle.cplatform.repository.UserRepository;
 @RestController
 @RequestMapping(path="/user")
 public class UserController {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	private UserRepository userRepository;
 
@@ -34,7 +38,7 @@ public class UserController {
 	
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<User> getAllUsers() {
-		// This returns a JSON or XML with the users
+        logger.info("Get User All called.");
 		return userRepository.findAll();
 	}
 }
