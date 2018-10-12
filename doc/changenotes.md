@@ -6,6 +6,7 @@
 4. 2018.10.11  *banner*
 5. 2018.10.11  *exception handler*
 6. 2018.10.11  *unit test*
+7. 2018.10.12  *actuator*
 
 
 
