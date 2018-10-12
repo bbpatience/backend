@@ -1,4 +1,8 @@
 buildscript {
+    ext {
+        projectName = 'com.walle.cplatform'
+        projectVersion = '0.0.1'
+    }
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
@@ -9,6 +13,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "1.5.2"
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -16,8 +24,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'com.walle'
-    version =  '0.1.0'
+    baseName = projectName
+    version =  projectVersion
 }
 
 repositories {
@@ -33,6 +41,8 @@ configurations {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+processTestResources.dependsOn('generateGitProperties')
+
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -40,5 +50,12 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-log4j2'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+gitProperties {
+    gitPropertiesDir = "src/main/resources"
+    dateFormat = "yyyy/MM/dd HH:mm:ss"
+    dateFormatTimeZone = "GMT"
+    version = projectVersion
 }
 

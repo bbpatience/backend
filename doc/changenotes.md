@@ -7,6 +7,7 @@
 5. 2018.10.11  *exception handler*
 6. 2018.10.11  *unit test*
 7. 2018.10.12  *actuator*
+8. 2018.10.12  */info to display git info*
 
 
 
@@ -17,7 +18,6 @@
 * multi-module
 * db transaction
 * redis session
-* misc version
 * import & export
 * druid
 * mybatis ??
