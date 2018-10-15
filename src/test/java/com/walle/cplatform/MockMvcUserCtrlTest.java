@@ -1,31 +1,33 @@
 package com.walle.cplatform;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.controller.UserController;
-import com.walle.cplatform.repository.UserRepository;
+import com.walle.cplatform.service.UserService;
+import com.walle.cplatform.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
+@Import(UserServiceImpl.class)
 public class MockMvcUserCtrlTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private UserRepository ur;
+//    @MockBean
+//    private UserService userService;
 
     @Before
     public void setUp() {
@@ -43,6 +45,7 @@ public class MockMvcUserCtrlTest {
 
     @Test
     public void testUserAll() throws Exception {
+//        when(userService.findAll()).thenReturn(RestResult.success());
         RequestBuilder requestBuilder = get("/user/all");
         this.mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(
             MockMvcResultMatchers.content().string("[]"));

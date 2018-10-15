@@ -19,20 +19,20 @@ public class ExceptionController {
     @ExceptionHandler(BaseException.class)
     public @ResponseBody RestResult handleValidationException(BaseException baseException) {
         log.error(baseException.getMessage());
-        return new RestResult(Constants.SYS_FAIL_FLAG, baseException.getMessage());
+        return new RestResult().setRspCode(Constants.SYS_FAIL_FLAG).setRspMsg(baseException.getMessage());
     }
 
     @ExceptionHandler(SQLException.class)
     public @ResponseBody RestResult handleSQLException(SQLException sqlException) {
         log.error(sqlException.getMessage());
         sqlException.printStackTrace();
-        return new RestResult(Constants.SYS_FAIL_FLAG, Constants.SYS_FAIL_MSG);
+        return RestResult.failure();
     }
 
     @ExceptionHandler(Exception.class)
     public @ResponseBody RestResult handleException(Exception exception) {
         log.error(exception.getMessage());
         exception.printStackTrace();
-        return new RestResult(Constants.SYS_FAIL_FLAG, Constants.SYS_FAIL_MSG);
+        return RestResult.failure();
     }
 }

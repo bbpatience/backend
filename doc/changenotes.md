@@ -10,6 +10,8 @@
 | 2018.10.11 | unit test | MockMvc , Junit |  |  |
 | 2018.10.12 | actuator | /actuator/* |  |  |
 | 2018.10.12 | git info | /actuator/info |  |  |
+| 2018.10.15 | druid | db cp |  |  |
+| 2018.10.15 | mybatis | orm |  |  |
 
 
 ### ToDo List
@@ -19,5 +21,3 @@
 * db transaction
 * redis session
 * import & export
-* druid
-* mybatis ??

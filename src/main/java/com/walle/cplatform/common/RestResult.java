@@ -1,43 +1,52 @@
 package com.walle.cplatform.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.walle.cplatform.utils.Constants;
 
 public class RestResult {
+    @JsonProperty("code")
     private String rspCode;
+    @JsonProperty("msg")
     private String rspMsg;
-    private String data;
+    @JsonProperty("data")
+    private Object data;
 
     public String getRspCode() {
         return rspCode;
     }
 
-    public void setRspCode(String rspCode) {
+    public RestResult setRspCode(String rspCode) {
         this.rspCode = rspCode;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
+        return this;
     }
 
     public String getRspMsg() {
         return rspMsg;
     }
 
-    public void setRspMsg(String rspMsg) {
+    public RestResult setRspMsg(String rspMsg) {
         this.rspMsg = rspMsg;
+        return this;
     }
 
-    public RestResult() {
-        this.rspCode = Constants.SUCCESS_FLAG;
-        this.rspMsg = Constants.SUCCESS_MSG;
+    public Object getData() {
+        return data;
     }
 
-    public RestResult(String rspCode, String rspMsg) {
-        this.rspCode = rspCode;
-        this.rspMsg = rspMsg;
+    public RestResult setData(Object data) {
+        this.data = data;
+        return this;
+    }
+
+    public static RestResult success() {
+        return new RestResult().setRspCode(Constants.SUCCESS_FLAG);
+    }
+
+    public static RestResult success(Object o) {
+        return RestResult.success().setData(o);
+    }
+
+    public static RestResult failure() {
+        return new RestResult().setRspCode(Constants.SYS_FAIL_FLAG).setRspMsg(Constants.SYS_FAIL_MSG);
     }
 }
