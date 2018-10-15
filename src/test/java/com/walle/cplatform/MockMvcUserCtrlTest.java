@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -18,19 +17,27 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.when;
+import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
+@AutoConfigureMybatis
 @WebMvcTest(UserController.class)
-@Import(UserServiceImpl.class)
 public class MockMvcUserCtrlTest {
-    @Autowired
+
     private MockMvc mockMvc;
 
-//    @MockBean
-//    private UserService userService;
+    @MockBean
+    private UserService userService;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Before
     public void setUp() {
+        //获取mockmvc对象实例
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
@@ -45,15 +52,16 @@ public class MockMvcUserCtrlTest {
 
     @Test
     public void testUserAll() throws Exception {
-//        when(userService.findAll()).thenReturn(RestResult.success());
+        String expectStr = "{\"code\":\"10000\"}";
+        when(userService.findAll()).thenReturn(RestResult.success());
         RequestBuilder requestBuilder = get("/user/all");
         this.mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(
-            MockMvcResultMatchers.content().string("[]"));
+            MockMvcResultMatchers.content().string(expectStr));
     }
 
     @Test
     public void testException() throws Exception {
-        String expectStr = "{\"rspCode\":\"10001\",\"rspMsg\":\"Server Failed!\"}";
+        String expectStr = "{\"code\":\"10001\",\"msg\":\"Server Failed!\"}";
         RequestBuilder requestBuilder = get("/user/exception");
         this.mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(
             MockMvcResultMatchers.content().string(expectStr));
