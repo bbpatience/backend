@@ -1,4 +1,4 @@
-package com.walle.cplatform.entity;
+package com.walle.cplatform.bean;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 
 @Table(name="t_user")
-public class User implements Serializable {
+public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 9129370215157758832L;
 

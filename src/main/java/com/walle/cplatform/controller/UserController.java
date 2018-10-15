@@ -27,7 +27,7 @@ public class UserController {
 	@GetMapping(path="/all")
 	public @ResponseBody
     RestResult getAllUsers() {
-        logger.info("Get User All called.");
+        logger.info("Get UserBean All called.");
 		return userService.findAll();
 	}
 

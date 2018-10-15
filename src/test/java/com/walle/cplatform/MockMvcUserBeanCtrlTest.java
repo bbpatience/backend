@@ -24,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @AutoConfigureMybatis
 @WebMvcTest(UserController.class)
-public class MockMvcUserCtrlTest {
+public class MockMvcUserBeanCtrlTest {
 
     private MockMvc mockMvc;
 

@@ -1,7 +1,7 @@
 package com.walle.cplatform.service.impl;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.entity.User;
+import com.walle.cplatform.bean.UserBean;
 import com.walle.cplatform.mapper.UserMapper;
 import com.walle.cplatform.pojos.OutputUserInfo;
 import com.walle.cplatform.service.UserService;
@@ -16,10 +16,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestResult findAll() {
-        User user = userMapper.findAll();
-        OutputUserInfo out = new OutputUserInfo();
-        out.setName(user.getName());
-        out.setMobile(user.getMobile());
-        return RestResult.success().setData(out);
+//        UserBean userBean = userMapper.findAll();
+//        OutputUserInfo out = new OutputUserInfo();
+//        out.setName(userBean.getName());
+//        out.setMobile(userBean.getMobile());
+        return RestResult.success();
     }
 }

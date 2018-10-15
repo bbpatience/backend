@@ -1,4 +1,4 @@
-package com.walle.cplatform.entity;
+package com.walle.cplatform.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name="t_class")
-public class Class {
+public class ClassBean {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
