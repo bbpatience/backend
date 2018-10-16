@@ -37,3 +37,10 @@ INSERT INTO `t_role_permission` VALUES (1, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_T
 
 # t_user_role
 INSERT INTO `t_user_role` VALUES (1, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+# t_classes
+INSERT INTO `t_classes` (`uid`, `name`, `type`, `state`, `create_dt`, `update_dt`)
+VALUES ('', 'bake', 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO `t_classes` (`uid`, `name`, `type`, `state`, `create_dt`, `update_dt`)
+VALUES ('', 'art', 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

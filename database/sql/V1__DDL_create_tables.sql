@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS `t_user` (
 CREATE TABLE IF NOT EXISTS `t_classes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(32) NOT NULL COMMENT 'uuid',
+  `name` VARCHAR(32) NULL COMMENT 'class name',
+  `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'state',
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'type',
   `create_dt` datetime DEFAULT NULL,
   `update_dt` datetime DEFAULT NULL,

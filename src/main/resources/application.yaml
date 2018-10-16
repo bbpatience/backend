@@ -48,7 +48,7 @@ druid:
 
 # Mybatis
 mybatis:
-  mapperLocations: classpath:mapper/*Mapper.xml
+#  mapperLocations: classpath:mapper/*Mapper.xml
   config-location: classpath:mybatis-config.xml
 
 management:
@@ -62,3 +62,16 @@ management:
   info:
     git:
       mode: full
+
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+#通用mapper
+#mappers 多个接口时逗号隔开
+mapper:
+  mappers: com.walle.cplatform.common.BaseMapper
+  not-empty: true
+  before: true
+  identity: mysql
