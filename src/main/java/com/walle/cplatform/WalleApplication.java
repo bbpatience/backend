@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.walle.cplatform"})
-@MapperScan("com.walle.cplatform.mapper")
+@MapperScan(basePackages = {"com.walle.cplatform.mapper", "com.walle.cplatform.*.mapper"})
 public class WalleApplication {
 
     public static void main(String[] args) {
