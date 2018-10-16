@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
@@ -37,20 +36,18 @@ import org.springframework.context.annotation.DependsOn;
 public class ShiroConfig {
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(
-        ModularRealmAuthenticator authenticator, DefaultWebSessionManager sessionManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        SecurityManager securityManager = getDefaultWebSecurityManager(authenticator, sessionManager);
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/user/login", "anon");
-        //以下是一个坑，当登录页面加载资源文件时会被/**匹配
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
-    private SecurityManager getDefaultWebSecurityManager (
+    @Bean("securityManager")
+    public SecurityManager getDefaultWebSecurityManager (
         ModularRealmAuthenticator authenticator, DefaultWebSessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setAuthenticator(authenticator);
@@ -59,7 +56,6 @@ public class ShiroConfig {
         securityManager.setRealms(realms);
         securityManager.setSessionManager(sessionManager);
         securityManager.setRememberMeManager(rememberMeManager());
-        SecurityUtils.setSecurityManager(securityManager);
         return securityManager;
     }
 
@@ -89,7 +85,7 @@ public class ShiroConfig {
         return simpleCookie;
     }
 
-    @Bean("authenticator")
+    @Bean
     public ModularRealmAuthenticator getModularRealmAuthenticator() {
         ModularRealmAuthenticator modularRealmAuthenticator = new ModularRealmAuthenticator();
         modularRealmAuthenticator
@@ -97,12 +93,6 @@ public class ShiroConfig {
         return modularRealmAuthenticator;
     }
 
-    @Bean("authorizer")
-    public ModularRealmAuthorizer getModularRealmAuthorizer() {
-        ModularRealmAuthorizer modularRealmAuthorizer = new ModularRealmAuthorizer();
-//        modularRealmAuthorizer.
-        return modularRealmAuthorizer;
-    }
     /**
      * 定时清理过期session
      */
@@ -113,7 +103,7 @@ public class ShiroConfig {
         return scheduler;
     }
 
-    @Bean("sessionManager")
+    @Bean
     public DefaultWebSessionManager getDefaultWebSessionManager (
         RedisCacheSessionDao sessionDAO, SimpleCookie sessionIdCookie) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
