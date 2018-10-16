@@ -1,6 +1,6 @@
-package com.walle.cplatform.mapper;
+package com.walle.cplatform.user.mapper;
 
-import com.walle.cplatform.bean.UserBean;
+import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.common.BaseMapper;
 import org.springframework.stereotype.Repository;
 

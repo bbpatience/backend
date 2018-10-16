@@ -1,7 +1,6 @@
 package com.walle.cplatform;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.pojos.OutputUserInfo;
 import com.walle.cplatform.utils.Constants;
 import java.util.Map;
 import org.junit.Test;

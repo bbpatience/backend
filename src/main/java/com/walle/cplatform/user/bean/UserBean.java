@@ -1,4 +1,4 @@
-package com.walle.cplatform.bean;
+package com.walle.cplatform.user.bean;
 
 import java.io.Serializable;
 import java.sql.Date;

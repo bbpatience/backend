@@ -1,4 +1,4 @@
-package com.walle.cplatform.service;
+package com.walle.cplatform.user.service;
 
 import com.walle.cplatform.common.RestResult;
 

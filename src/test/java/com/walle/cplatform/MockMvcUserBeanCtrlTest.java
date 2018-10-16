@@ -1,9 +1,8 @@
 package com.walle.cplatform;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.controller.UserController;
-import com.walle.cplatform.service.UserService;
-import com.walle.cplatform.service.impl.UserServiceImpl;
+import com.walle.cplatform.user.controller.UserController;
+import com.walle.cplatform.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

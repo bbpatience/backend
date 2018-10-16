@@ -1,7 +1,7 @@
-package com.walle.cplatform.controller;
+package com.walle.cplatform.user.controller;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.service.UserService;
+import com.walle.cplatform.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

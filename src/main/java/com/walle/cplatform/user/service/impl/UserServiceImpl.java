@@ -1,10 +1,8 @@
-package com.walle.cplatform.service.impl;
+package com.walle.cplatform.user.service.impl;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.bean.UserBean;
-import com.walle.cplatform.mapper.UserMapper;
-import com.walle.cplatform.pojos.OutputUserInfo;
-import com.walle.cplatform.service.UserService;
+import com.walle.cplatform.user.mapper.UserMapper;
+import com.walle.cplatform.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

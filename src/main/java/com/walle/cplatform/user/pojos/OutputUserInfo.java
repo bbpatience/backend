@@ -1,4 +1,4 @@
-package com.walle.cplatform.pojos;
+package com.walle.cplatform.user.pojos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;

@@ -1,8 +1,8 @@
 package com.walle.cplatform.shiro.service.impl;
 
 
-import com.walle.cplatform.bean.UserBean;
-import com.walle.cplatform.mapper.UserMapper;
+import com.walle.cplatform.user.bean.UserBean;
+import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.shiro.bean.PermissionBean;
 import com.walle.cplatform.shiro.bean.RoleBean;
 import com.walle.cplatform.shiro.bean.RolePermissionBean;

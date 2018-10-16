@@ -1,4 +1,4 @@
-package com.walle.cplatform.bean;
+package com.walle.cplatform.user.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

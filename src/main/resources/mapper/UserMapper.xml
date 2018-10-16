@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.walle.cplatform.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.walle.cplatform.bean.UserBean">
+<mapper namespace="com.walle.cplatform.user.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.walle.cplatform.user.bean.UserBean">
         <result column="id" property="id" />
         <result column="name" property="name" />
         <result column="mobile" property="mobile" />
