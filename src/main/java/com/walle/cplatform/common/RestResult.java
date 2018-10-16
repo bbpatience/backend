@@ -39,7 +39,7 @@ public class RestResult {
     }
 
     public static RestResult success() {
-        return new RestResult().setRspCode(Constants.SUCCESS_FLAG);
+        return new RestResult().setRspCode(Constants.SUCCESS_FLAG).setRspMsg(Constants.SUCCESS_MSG);
     }
 
     public static RestResult success(Object o) {
@@ -48,5 +48,9 @@ public class RestResult {
 
     public static RestResult failure() {
         return new RestResult().setRspCode(Constants.SYS_FAIL_FLAG).setRspMsg(Constants.SYS_FAIL_MSG);
+    }
+
+    public static RestResult generate(String rspCode) {
+        return new RestResult().setRspCode(rspCode).setRspMsg(Constants.getRspMessage(rspCode));
     }
 }
