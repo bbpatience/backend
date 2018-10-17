@@ -33,12 +33,11 @@ public abstract class AuthorizationBaseRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         logger.info("doGetAuthorizationInfo");
         if (!principals.isEmpty() && principals.fromRealm(getName()).size() > 0) {
-            Object userid = ShiroUtils.getAttribute(ShiroUtils.USER_ID);
-            if (userid != null) {
+            Object userId = ShiroUtils.getAttribute(ShiroUtils.USER_ID);
+            if (userId != null) {
                 SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
                 // roles | perms
-                Map<String, Collection<String>> rolesAndPerms = shiroService
-                    .getUserRolesAndPerms(userid);
+                Map<String, Collection<String>> rolesAndPerms = shiroService.getUserRolesAndPerms(userId);
                 Collection<String> roles = rolesAndPerms.get(Constants.DEFAULT_ROLES_KEY);
                 Collection<String> perms = rolesAndPerms.get(Constants.DEFAULT_PERMS_KEY);
                 if (!CollectionUtils.isEmpty(roles)) {

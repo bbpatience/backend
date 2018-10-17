@@ -2,6 +2,8 @@ package com.walle.cplatform.user.controller;
 
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.service.ClassesService;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ClassesController {
     }
 
     @GetMapping
+    @RequiresPermissions("*")
+//    @RequiresPermissions(value = {"*", "eab:manage"}, logical = Logical.OR)
     public @ResponseBody RestResult getAllClasses() {
         logger.info("Get Classes All called.");
         return classesService.getAllClasses();

@@ -1,9 +1,10 @@
 package com.walle.cplatform.user.service.impl;
 
 import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.user.UserState;
+import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.service.UserService;
-import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,10 +32,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestResult login(String username, String password) {
+        UserBean user = getUserByUsername(username);
+
+        if (!checkUserState(user)) {
+            logger.info("login fail.");
+            return RestResult.generate(RestResultCode.USER_USER_DISABLED);
+        }
         RestResultCode rspCode = RestResultCode.COMMON_SUCCESS;
         AuthenticationToken token = new UsernamePasswordToken(username, password);
         try {
             ShiroUtils.getSubject().login(token);
+            ShiroUtils.setAttribute(ShiroUtils.USER_ID, user.getId());
+            ShiroUtils.setAttribute(ShiroUtils.USER_UID, user.getUid());
         } catch (UnknownAccountException e) {
             rspCode = RestResultCode.USER_USER_NOT_FOUND;
         } catch (IncorrectCredentialsException unknown) {
@@ -47,5 +57,19 @@ public class UserServiceImpl implements UserService {
             rspCode = RestResultCode.COMMON_SERVER_ERROR;
         }
         return RestResult.generate(rspCode);
+    }
+
+    private boolean checkUserState(UserBean user) {
+        return user != null && user.getState() == UserState.NORMAL.getState();
+    }
+
+    @Override
+    public UserBean getUserByUsername(String username) {
+        if (StringUtils.isEmpty(username)) {
+            return null;
+        }
+        UserBean userBean = new UserBean();
+        userBean.setUsername(username);
+        return userMapper.selectOne(userBean);
     }
 }

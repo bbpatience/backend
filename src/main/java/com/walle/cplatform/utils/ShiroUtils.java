@@ -12,7 +12,8 @@ import org.apache.shiro.subject.Subject;
  */
 public class ShiroUtils {
 
-    static public String USER_ID = "user_id";
+    public static String USER_ID = "user_id";
+    public static String USER_UID = "user_uid";
 
     public static Session getSession() {
         Subject subject = getSubject();

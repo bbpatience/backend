@@ -109,8 +109,7 @@ public class ShiroServiceImpl implements ShiroService {
             // 查角色和权限关系
             Example rolePermissionExample = new Example(RolePermissionBean.class);
             rolePermissionExample.createCriteria().andIn("roleid", roleids);
-            List<RolePermissionBean> rolePermissions = rolePermissionMapper
-                .selectByExample(rolePermissionExample);
+            List<RolePermissionBean> rolePermissions = rolePermissionMapper.selectByExample(rolePermissionExample);
             if (!CollectionUtils.isEmpty(rolePermissions)) {
                 Set<Long> permids = new HashSet<>();
                 for (RolePermissionBean rolePermission : rolePermissions) {
@@ -118,9 +117,8 @@ public class ShiroServiceImpl implements ShiroService {
                 }
                 // 查询权限
                 Example permissionExample = new Example(PermissionBean.class);
-                permissionExample.createCriteria().andIn("roleid", roleids);
-                List<PermissionBean> permissions = permissionMapper
-                    .selectByExample(permissionExample);
+                permissionExample.createCriteria().andIn("id", permids);
+                List<PermissionBean> permissions = permissionMapper.selectByExample(permissionExample);
                 if (!CollectionUtils.isEmpty(permissions)) {
                     List<String> permNames = new ArrayList<>();
                     for (PermissionBean permission : permissions) {
