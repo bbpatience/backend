@@ -1,6 +1,7 @@
 package com.walle.cplatform.common;
 
 import com.walle.cplatform.utils.Constants;
+import com.walle.cplatform.utils.RestResultCode;
 import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,8 @@ public class ExceptionController {
     @ExceptionHandler(BaseException.class)
     public @ResponseBody RestResult handleValidationException(BaseException baseException) {
         log.error(baseException.getMessage());
-        return new RestResult().setRspCode(Constants.SYS_FAIL_FLAG).setRspMsg(baseException.getMessage());
+        return new RestResult().setRspCode(RestResultCode.COMMON_SERVER_ERROR.getCode())
+            .setRspMsg(baseException.getMessage());
     }
 
     @ExceptionHandler(SQLException.class)

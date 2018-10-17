@@ -1,21 +1,21 @@
 package com.walle.cplatform.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.walle.cplatform.utils.Constants;
+import com.walle.cplatform.utils.RestResultCode;
 
 public class RestResult {
     @JsonProperty("code")
-    private String rspCode;
+    private Integer rspCode;
     @JsonProperty("msg")
     private String rspMsg;
     @JsonProperty("data")
     private Object data;
 
-    public String getRspCode() {
+    public Integer getRspCode() {
         return rspCode;
     }
 
-    public RestResult setRspCode(String rspCode) {
+    public RestResult setRspCode(Integer rspCode) {
         this.rspCode = rspCode;
         return this;
     }
@@ -39,7 +39,9 @@ public class RestResult {
     }
 
     public static RestResult success() {
-        return new RestResult().setRspCode(Constants.SUCCESS_FLAG).setRspMsg(Constants.SUCCESS_MSG);
+        return new RestResult()
+            .setRspCode(RestResultCode.COMMON_SUCCESS.getCode())
+            .setRspMsg(RestResultCode.COMMON_SUCCESS.getMsg());
     }
 
     public static RestResult success(Object o) {
@@ -47,10 +49,18 @@ public class RestResult {
     }
 
     public static RestResult failure() {
-        return new RestResult().setRspCode(Constants.SYS_FAIL_FLAG).setRspMsg(Constants.SYS_FAIL_MSG);
+        return new RestResult()
+            .setRspCode(RestResultCode.COMMON_SERVER_ERROR.getCode())
+            .setRspMsg(RestResultCode.COMMON_SERVER_ERROR.getMsg());
     }
 
-    public static RestResult generate(String rspCode) {
-        return new RestResult().setRspCode(rspCode).setRspMsg(Constants.getRspMessage(rspCode));
+    public static RestResult generate(Integer rspCode) {
+        return new RestResult().setRspCode(rspCode).setRspMsg(RestResultCode.getMsg(rspCode));
+    }
+
+    public static RestResult generate(RestResultCode result) {
+        return new RestResult()
+            .setRspCode(result.getCode())
+            .setRspMsg(result.getMsg());
     }
 }

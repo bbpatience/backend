@@ -4,6 +4,7 @@ import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.service.UserService;
 import com.walle.cplatform.utils.Constants;
+import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -29,21 +30,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestResult login(String username, String password) {
-        String rspCode = Constants.SUCCESS_FLAG;
+        RestResultCode rspCode = RestResultCode.COMMON_SUCCESS;
         AuthenticationToken token = new UsernamePasswordToken(username, password);
         try {
             ShiroUtils.getSubject().login(token);
         } catch (UnknownAccountException e) {
-            rspCode = Constants.SYS_FAIL_FLAG_USER_NOT_FOUND;
+            rspCode = RestResultCode.USER_USER_NOT_FOUND;
         } catch (IncorrectCredentialsException unknown) {
-            rspCode = Constants.SYS_FAIL_FLAG_NAME_PWD_NOT_MATCH;
+            rspCode = RestResultCode.USER_NAME_PWD_NOT_MATCH;
         } catch (LockedAccountException incorrect) {
-            rspCode = Constants.SYS_FAIL_FLAG_USER_DISABLED;
+            rspCode = RestResultCode.USER_USER_DISABLED;
         } catch (AuthenticationException e) {
-            rspCode = Constants.SYS_FAIL_FLAG_NAME_PWD_NOT_MATCH;
+            rspCode = RestResultCode.USER_NAME_PWD_NOT_MATCH;
         } catch (Exception e) {
             logger.error("login failure", e);
-            rspCode = Constants.SYS_FAIL_FLAG;
+            rspCode = RestResultCode.COMMON_SERVER_ERROR;
         }
         return RestResult.generate(rspCode);
     }

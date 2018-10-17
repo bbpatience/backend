@@ -5,6 +5,7 @@ import com.walle.cplatform.user.pojos.InputLogin;
 import com.walle.cplatform.user.service.UserService;
 
 import com.walle.cplatform.utils.Constants;
+import com.walle.cplatform.utils.RestResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class UserController {
         logger.info("User login called.");
 
         if (StringUtils.isEmpty(data.getUsername())) {
-            return RestResult.generate(Constants.SYS_FAIL_FLAG_INVALID_USERNAME);
+            return RestResult.generate(RestResultCode.USER_INVALID_USERNAME);
         }
 
         if (StringUtils.isEmpty(data.getPassword())) {
-            return RestResult.generate(Constants.SYS_FAIL_FLAG_INVALID_PASSWORD);
+            return RestResult.generate(RestResultCode.USER_INVALID_PASSWORD);
         }
 		return userService.login(data.getUsername(), data.getPassword());
 	}
