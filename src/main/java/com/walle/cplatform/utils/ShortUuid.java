@@ -133,7 +133,7 @@ public final class ShortUuid {
 
     static public void main(String[] args) {
         ShortUuid.Builder builder = new ShortUuid.Builder();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             ShortUuid shortUuid = builder.build();
             System.out.print(shortUuid);
             System.out.print("==");

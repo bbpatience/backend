@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class LoginRealm extends AuthorizationBaseRealm {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static final String DEFAULT_SALT_KEY = "salt";
+
 
     /**
      * 认证-登录
@@ -29,7 +29,7 @@ public class LoginRealm extends AuthorizationBaseRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
         throws AuthenticationException {
         Map<String, Object> info = null;
-        logger.info("开始认证");
+        logger.info("doGetAuthenticationInfo");
         if (token instanceof UsernamePasswordToken) {
             UsernamePasswordToken authToken = (UsernamePasswordToken) token;
             info = shiroService.getUserUniqueIdentityAndPassword(authToken.getUsername());
@@ -38,13 +38,11 @@ public class LoginRealm extends AuthorizationBaseRealm {
             info == null || info.isEmpty() || info.get(Constants.DEFAULT_IDENTITY_KEY) == null
                 || info.get(Constants.DEFAULT_PWD_KEY) == null;
         if (!flag) {
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo (
                 info.get(Constants.DEFAULT_IDENTITY_KEY), info.get(Constants.DEFAULT_PWD_KEY),
                 getName());
-            simpleAuthenticationInfo
-                .setCredentialsSalt(ByteSource.Util.bytes(info.get(DEFAULT_SALT_KEY)));
-            logger.info("verify account success. usernaame: {}",
-                info.get(Constants.DEFAULT_IDENTITY_KEY));
+            simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(info.get(Constants.DEFAULT_SALT_KEY)));
+            logger.info("verify account success. username: {}", info.get(Constants.DEFAULT_IDENTITY_KEY));
             return simpleAuthenticationInfo;
         } else {
             // 没有找到账号

@@ -30,7 +30,7 @@ public class UserBean implements Serializable {
     private Date update_dt;
 
     @Column
-    private String pwdSalt;
+    private String pwdsalt;
 
     @Column
     private Date last_login_dt;
@@ -99,11 +99,11 @@ public class UserBean implements Serializable {
     }
 
     public String getPwdSalt() {
-        return pwdSalt;
+        return pwdsalt;
     }
 
     public void setPwdSalt(String pwdSalt) {
-        this.pwdSalt = pwdSalt;
+        this.pwdsalt = pwdSalt;
     }
 
     public Date getLast_login_dt() {
