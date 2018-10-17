@@ -52,9 +52,6 @@ public class LoginRealm extends AuthorizationBaseRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        if (token instanceof UsernamePasswordToken) {
-            return true;
-        }
-        return false;
+        return  (token instanceof UsernamePasswordToken);
     }
 }

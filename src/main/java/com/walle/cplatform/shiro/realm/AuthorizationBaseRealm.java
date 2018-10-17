@@ -31,7 +31,7 @@ public abstract class AuthorizationBaseRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        logger.info("开始授权");
+        logger.info("doGetAuthorizationInfo");
         if (!principals.isEmpty() && principals.fromRealm(getName()).size() > 0) {
             Object userid = ShiroUtils.getAttribute(ShiroUtils.USER_ID);
             if (userid != null) {

@@ -45,20 +45,25 @@ public class ShiroServiceImpl implements ShiroService {
     // REDIS CACHE KEY
     private static final String CACHE_ROLES_PERMS_PREFIX_KEY = "roles_perms_";
 
-    @Autowired
-    PermissionMapper permissionMapper;
+    private PermissionMapper permissionMapper;
+
+    private RoleMapper roleMapper;
+
+    private RolePermissionMapper rolePermissionMapper;
+
+    private UserRoleMapper userRoleMapper;
+
+    private UserMapper userMapper;
 
     @Autowired
-    RoleMapper roleMapper;
-
-    @Autowired
-    RolePermissionMapper rolePermissionMapper;
-
-    @Autowired
-    UserRoleMapper userRoleMapper;
-
-    @Autowired
-    UserMapper userMapper;
+    public ShiroServiceImpl(PermissionMapper permissionMapper, RoleMapper roleMapper, RolePermissionMapper rolePermissionMapper,
+        UserRoleMapper userRoleMapper, UserMapper userMapper) {
+        this.permissionMapper = permissionMapper;
+        this.roleMapper = roleMapper;
+        this.rolePermissionMapper = rolePermissionMapper;
+        this.userMapper = userMapper;
+        this.userRoleMapper = userRoleMapper;
+    }
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, String> redisTemplate;
