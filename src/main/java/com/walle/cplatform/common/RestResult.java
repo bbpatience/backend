@@ -1,8 +1,11 @@
 package com.walle.cplatform.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.walle.cplatform.utils.RestResultCode;
 
+@JsonInclude(Include.NON_EMPTY) //added for mock test.
 public class RestResult {
     @JsonProperty("code")
     private Integer rspCode;

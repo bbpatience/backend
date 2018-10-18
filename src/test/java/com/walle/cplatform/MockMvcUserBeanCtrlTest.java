@@ -2,18 +2,22 @@ package com.walle.cplatform;
 
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.controller.UserController;
+import com.walle.cplatform.user.pojos.InputLogin;
 import com.walle.cplatform.user.service.UserService;
+import com.walle.cplatform.utils.JacksonUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.when;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
@@ -50,19 +54,38 @@ public class MockMvcUserBeanCtrlTest {
     }
 
     @Test
-    public void testUserAll() throws Exception {
-        String expectStr = "{\"code\":\"10000\"}";
-        when(userService.findAll()).thenReturn(RestResult.success());
-        RequestBuilder requestBuilder = get("/user/all");
-        this.mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(
-            MockMvcResultMatchers.content().string(expectStr));
+    public void testUserLogin() throws Exception {
+        InputLogin input = new InputLogin();
+        input.setUsername("superadmin");
+        input.setPassword("patience123");
+
+        RestResult expect = RestResult.success();
+        when(userService.login("123", "123")).thenReturn(RestResult.success());
+        RequestBuilder requestBuilder = post("/user/login")
+            .contentType(MediaType.APPLICATION_JSON).content(JacksonUtils.toJSon(input));
+        this.mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isOk());
+
+// TODO   check
+//    this.mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isOk()).andExpect(
+//            MockMvcResultMatchers.content().string(JacksonUtils.toJSon(expect)));
+    }
+
+    @Test
+    public void testUserLogout() throws Exception {
+
+        RestResult expect = RestResult.success();
+        when(userService.logout()).thenReturn(RestResult.success());
+        RequestBuilder requestBuilder = post("/user/logout")
+            .contentType(MediaType.APPLICATION_JSON);
+        this.mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isOk()).andExpect(
+            MockMvcResultMatchers.content().string(JacksonUtils.toJSon(expect)));
     }
 
     @Test
     public void testException() throws Exception {
-        String expectStr = "{\"code\":\"10001\",\"msg\":\"Server Failed!\"}";
+        RestResult result = RestResult.failure();
         RequestBuilder requestBuilder = get("/user/exception");
         this.mockMvc.perform(requestBuilder).andExpect(status().isOk()).andExpect(
-            MockMvcResultMatchers.content().string(expectStr));
+            MockMvcResultMatchers.content().string(JacksonUtils.toJSon(result)));
     }
 }

@@ -1,8 +1,8 @@
 package com.walle.cplatform;
 
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.utils.Constants;
-import java.util.Map;
+import com.walle.cplatform.user.pojos.InputLogin;
+import com.walle.cplatform.utils.RestResultCode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +15,52 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserBeanControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
+
     @Test
-    public void testUserAll() {
-        RestResult response = this.restTemplate.getForObject("/user/all", RestResult.class);
-        Map user = (Map) response.getData();
-        assert(user.get("name")).equals("superadmin");
+    public void testUserLogin() {
+        InputLogin input = new InputLogin();
+        input.setUsername("superadmin");
+        input.setPassword("patience123");
+
+        RestResult response = this.restTemplate.postForObject("/user/login", input, RestResult.class);
+        assert(response.getRspCode()).equals(RestResultCode.COMMON_SUCCESS.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.COMMON_SUCCESS.getMsg());
     }
 
     @Test
     public void testException() {
         RestResult response = this.restTemplate.getForObject("/user/exception", RestResult.class);
-        assert(response.getRspCode()).equals(Constants.SYS_FAIL_FLAG);
-        assert(response.getRspMsg()).equals(Constants.SYS_FAIL_MSG);
+        assert(response.getRspCode()).equals(RestResultCode.COMMON_SERVER_ERROR.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.COMMON_SERVER_ERROR.getMsg());
+    }
+
+    @Test
+    public void testUserLogout() {
+        RestResult response = this.restTemplate.postForObject("/user/logout", null, RestResult.class);
+        assert(response.getRspCode()).equals(RestResultCode.COMMON_SUCCESS.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.COMMON_SUCCESS.getMsg());
+    }
+
+    @Test
+    public void testClassesFail() {
+        RestResult response = this.restTemplate.getForObject("/classes", RestResult.class);
+        assert(response.getRspCode()).equals(RestResultCode.USER_USER_NOT_LOGIN.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.USER_USER_NOT_LOGIN.getMsg());
+    }
+
+    @Test
+    public void testClasses() {
+        InputLogin input = new InputLogin();
+        input.setUsername("superadmin");
+        input.setPassword("patience123");
+
+        RestResult response = this.restTemplate.postForObject("/user/login", input, RestResult.class);
+        assert(response.getRspCode()).equals(RestResultCode.COMMON_SUCCESS.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.COMMON_SUCCESS.getMsg());
+
+//        TODO use cookie to get class
+        response = this.restTemplate.getForObject("/classes", RestResult.class);
+        assert(response.getRspCode()).equals(RestResultCode.USER_USER_NOT_LOGIN.getCode());
+        assert(response.getRspMsg()).equals(RestResultCode.USER_USER_NOT_LOGIN.getMsg());
     }
 }
