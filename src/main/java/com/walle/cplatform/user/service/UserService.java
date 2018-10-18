@@ -6,5 +6,7 @@ import com.walle.cplatform.user.bean.UserBean;
 public interface UserService {
     RestResult login(String username, String password);
 
+    RestResult logout();
+
     UserBean getUserByUsername(String username);
 }

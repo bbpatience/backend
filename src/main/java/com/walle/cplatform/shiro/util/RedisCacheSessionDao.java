@@ -5,11 +5,11 @@ import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.ShortUuid;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -21,11 +21,11 @@ public class RedisCacheSessionDao extends CachingSessionDAO {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final String RCE_SESSION_KEY_PREFIX = "session_";
+    public static final String SESSION_KEY_PREFIX = "session_";
 
     private long globalSessionTimeOut = Constants.GLOBAL_SESSION_TIMEOUT;
 
-    @Resource(name = "redisTemplate")
+    @Autowired
     private RedisTemplate<Serializable, Session> redisTemplate;
 
     public RedisCacheSessionDao() {
@@ -37,7 +37,7 @@ public class RedisCacheSessionDao extends CachingSessionDAO {
 
     @Override
     protected void doUpdate(Session session) {
-        String sessionKey = RCE_SESSION_KEY_PREFIX + session.getId();
+        String sessionKey = SESSION_KEY_PREFIX + session.getId();
         redisTemplate.opsForValue().set(sessionKey, session);
         redisTemplate.expire(sessionKey, globalSessionTimeOut, TimeUnit.MILLISECONDS);
     }
@@ -47,7 +47,7 @@ public class RedisCacheSessionDao extends CachingSessionDAO {
         if (session == null || session.getId() == null) {
             return;
         }
-        redisTemplate.delete(RCE_SESSION_KEY_PREFIX + session.getId());
+        redisTemplate.delete(SESSION_KEY_PREFIX + session.getId());
     }
 
     @Override
@@ -55,7 +55,7 @@ public class RedisCacheSessionDao extends CachingSessionDAO {
         Serializable sessionId = generateSessionId(session);
         assignSessionId(session, sessionId);
 
-        String sessionKey = RCE_SESSION_KEY_PREFIX + sessionId;
+        String sessionKey = SESSION_KEY_PREFIX + sessionId;
         redisTemplate.opsForValue().set(sessionKey, session);
         redisTemplate.expire(sessionKey, globalSessionTimeOut, TimeUnit.MILLISECONDS);
 
@@ -64,7 +64,7 @@ public class RedisCacheSessionDao extends CachingSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        return redisTemplate.opsForValue().get(RCE_SESSION_KEY_PREFIX + sessionId);
+        return redisTemplate.opsForValue().get(SESSION_KEY_PREFIX + sessionId);
     }
 
     /**

@@ -45,6 +45,12 @@ public class UserController {
 		return userService.login(data.getUsername(), data.getPassword());
 	}
 
+    @PostMapping(path="/logout")
+    public @ResponseBody RestResult userLogout() {
+        logger.info("User logout called.");
+        return userService.logout();
+    }
+
     @GetMapping(path="/exception")
     public @ResponseBody void exception() throws Exception {
         throw new IllegalAccessException("IllegalAccessException");
