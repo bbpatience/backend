@@ -1,16 +1,17 @@
 package com.walle.cplatform.config;
 
+import com.walle.cplatform.common.AuthFilter;
 import com.walle.cplatform.shiro.realm.LoginRealm;
 import com.walle.cplatform.shiro.util.CustomAtLeastOneSuccessfulStrategy;
 import com.walle.cplatform.shiro.util.RedisCacheSessionDao;
 import com.walle.cplatform.utils.Constants;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
-import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -26,6 +27,7 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import javax.servlet.Filter;
 
 /**
  * @Author zxx
@@ -39,11 +41,22 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/user/login", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        Map<String, Filter> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("authFilter", new AuthFilter());
+        shiroFilterFactoryBean.setFilters(filterChainDefinitionMap);
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap());
         return shiroFilterFactoryBean;
+    }
+
+    private static final List<String> servicePaths = Arrays.asList("classes", "setting");
+
+    private static Map<String, String> filterChainDefinitionMap() {
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+
+        for (String serverPath : servicePaths) {
+            filterChainDefinitionMap.put("/api/" + serverPath + "/**", "authFilter");
+        }
+        return filterChainDefinitionMap;
     }
 
     @Bean("securityManager")

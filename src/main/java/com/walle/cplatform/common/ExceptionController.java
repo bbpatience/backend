@@ -1,8 +1,8 @@
 package com.walle.cplatform.common;
 
-import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
 import java.sql.SQLException;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,6 +29,12 @@ public class ExceptionController {
         log.error(sqlException.getMessage());
         sqlException.printStackTrace();
         return RestResult.failure();
+    }
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public @ResponseBody RestResult handleAuthException(UnauthenticatedException exception) {
+        log.error(exception.getMessage());
+        return RestResult.generate(RestResultCode.USER_USER_NOT_LOGIN);
     }
 
     @ExceptionHandler(Exception.class)
