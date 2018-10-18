@@ -12,12 +12,12 @@
 | 2018.10.12 | git info | /actuator/info |  |  |
 | 2018.10.15 | druid | db cp |  |  |
 | 2018.10.15 | mybatis | orm |  |  |
-
+| 2018.10.17 | authentication | apache shiro |
+| 2018.10.17 | authorization | apache shiro |
+| 2018.10.17 | session  | apache shiro & redis |
 
 ### ToDo List
 * db design
-* access authentication. spring security
 * multi-module
 * db transaction
-* redis session
 * import & export

@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserService {
     public RestResult login(String username, String password) {
         UserBean user = getUserByUsername(username);
 
+        if (user == null) {
+            logger.info("login fail.");
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        }
+
         if (!checkUserState(user)) {
             logger.info("login fail.");
             return RestResult.generate(RestResultCode.USER_USER_DISABLED);
