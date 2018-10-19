@@ -1,9 +1,9 @@
-package com.walle.cplatform.classes.service;
+package com.walle.cplatform.classes.service.impl;
 
 import com.walle.cplatform.classes.pojos.OutputClassInfo;
 import com.walle.cplatform.classes.bean.ClassBean;
 import com.walle.cplatform.classes.mapper.ClassesMapper;
-import com.walle.cplatform.classes.service.impl.ClassesService;
+import com.walle.cplatform.classes.service.ClassesService;
 import com.walle.cplatform.common.RestResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,17 @@ public class ClassesServiceImpl implements ClassesService {
 
         List<OutputClassInfo> out = new ArrayList<>();
         classesBean.forEach(classBean -> out.add(new OutputClassInfo(classBean)));
+        return RestResult.success().setData(out);
+    }
+
+    @Override
+    public RestResult getClassByUid(String uid) {
+        logger.info("Get Classes By uid {}", uid);
+        ClassBean beanQuery = new ClassBean();
+        beanQuery.setUid(uid);
+        ClassBean classesBean = classesMapper.selectOne(beanQuery);
+
+        OutputClassInfo out = new OutputClassInfo(classesBean);
         return RestResult.success().setData(out);
     }
 }
