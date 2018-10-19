@@ -3,9 +3,9 @@ package com.walle.cplatform.classes.pojos;
 /**
  * @author: bbpatience
  * @date: 2018/10/19
- * @description: InputAddClassInfo
+ * @description: InputClassInfo
  **/
-public class InputAddClassInfo {
+public class InputClassInfo {
     private String name;
 
     public String getName() {

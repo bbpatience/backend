@@ -84,4 +84,20 @@ public class ClassesServiceImpl implements ClassesService {
         }
         return RestResult.success();
     }
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public RestResult updateClass(String newName, String uid) {
+        logger.info("update Class By uid {}", uid);
+        ClassBean bean = new ClassBean();
+        bean.setName(newName);
+
+        Example example = new Example(ClassBean.class);
+        example.createCriteria().andEqualTo("uid", uid);
+        int result = classesMapper.updateByExampleSelective(bean, example);
+        if (result <= 0) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        return RestResult.success();
+    }
 }

@@ -10,4 +10,6 @@ public interface ClassesService {
     RestResult addClass(String name);
 
     RestResult delClass(String uid);
+
+    RestResult updateClass(String newName, String uid);
 }
