@@ -32,11 +32,22 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public RestResult getAllClasses() {
-        logger.info("Get All Classes");
-        List<ClassBean> classesBean = classesMapper.selectAll();
-
+    public RestResult getClasses(Integer state) {
+        logger.info("Get Classes");
         List<OutputClassInfo> out = new ArrayList<>();
+        List<ClassBean> classesBean;
+        if (ClassState.DELETED.getState() == state ||
+            ClassState.NORMAL.getState() == state) {
+
+            Example example = new Example(ClassBean.class);
+            example.createCriteria().andEqualTo("state", state);
+            classesBean = classesMapper.selectByExample(example);
+            if (classesBean == null) {
+                return RestResult.generate(RestResultCode.CLASS_CLASS_NOT_FOUND);
+            }
+        } else {
+            classesBean = classesMapper.selectAll();
+        }
         classesBean.forEach(classBean -> out.add(new OutputClassInfo(classBean)));
         return RestResult.success().setData(out);
     }
@@ -48,7 +59,7 @@ public class ClassesServiceImpl implements ClassesService {
         beanQuery.setUid(uid);
         ClassBean classesBean = classesMapper.selectOne(beanQuery);
         if (classesBean == null) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+            return RestResult.generate(RestResultCode.CLASS_CLASS_NOT_FOUND);
         }
         OutputClassInfo out = new OutputClassInfo(classesBean);
         return RestResult.success().setData(out);
@@ -80,7 +91,7 @@ public class ClassesServiceImpl implements ClassesService {
         example.createCriteria().andEqualTo("uid", uid);
         int result = classesMapper.updateByExampleSelective(bean, example);
         if (result <= 0) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+            return RestResult.generate(RestResultCode.CLASS_CLASS_NOT_FOUND);
         }
         return RestResult.success();
     }
@@ -89,6 +100,12 @@ public class ClassesServiceImpl implements ClassesService {
     @Transactional(rollbackFor = Throwable.class)
     public RestResult updateClass(String newName, String uid) {
         logger.info("update Class By uid {}", uid);
+        ClassBean beanQuery = new ClassBean();
+        beanQuery.setUid(uid);
+        ClassBean classesBean = classesMapper.selectOne(beanQuery);
+        if (classesBean == null || classesBean.getState() == ClassState.DELETED.getState()) {
+            return RestResult.generate(RestResultCode.CLASS_CLASS_NOT_FOUND);
+        }
         ClassBean bean = new ClassBean();
         bean.setName(newName);
 

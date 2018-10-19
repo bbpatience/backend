@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,9 +38,10 @@ public class ClassesController {
     @GetMapping
     @RequiresPermissions("*")
 //    @RequiresPermissions(value = {"*", "eab:manage"}, logical = Logical.OR)
-    public @ResponseBody RestResult getAllClasses() {
-        logger.info("Get Classes All called.");
-        return classesService.getAllClasses();
+    public @ResponseBody RestResult getClasses (
+        @RequestParam(value = "state", defaultValue = "0", required = false) Integer state) {
+        logger.info("Get Classes called. {}", state);
+        return classesService.getClasses(state);
     }
 
     @GetMapping("/{uid}")

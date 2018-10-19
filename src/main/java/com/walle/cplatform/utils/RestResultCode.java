@@ -14,7 +14,10 @@ public enum RestResultCode {
     USER_USER_NOT_FOUND(10103, "User not found."),
     USER_NAME_PWD_NOT_MATCH(10104, "Username and Password not match."),
     USER_USER_DISABLED(10105, "User disabled."),
-    USER_USER_NOT_LOGIN(10106, "User not login.");
+    USER_USER_NOT_LOGIN(10106, "User not login."),
+
+    /* class */
+    CLASS_CLASS_NOT_FOUND(10201, "class not found");
 
     private int code;
     private String msg;

@@ -3,7 +3,7 @@ package com.walle.cplatform.classes.service;
 import com.walle.cplatform.common.RestResult;
 
 public interface ClassesService {
-    RestResult getAllClasses();
+    RestResult getClasses(Integer state);
 
     RestResult getClassByUid(String uid);
 
