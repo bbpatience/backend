@@ -6,4 +6,8 @@ public interface ClassesService {
     RestResult getAllClasses();
 
     RestResult getClassByUid(String uid);
+
+    RestResult addClass(String name);
+
+    RestResult delClass(String uid);
 }

@@ -2,7 +2,7 @@ package com.walle.cplatform.user.service.impl;
 
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.shiro.util.RedisCacheSessionDao;
-import com.walle.cplatform.user.enumclass.UserState;
+import com.walle.cplatform.user.enums.UserState;
 import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.service.UserService;
