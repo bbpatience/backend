@@ -1,4 +1,4 @@
-package com.walle.cplatform.user;
+package com.walle.cplatform.user.enumclass;
 
 public enum UserState {
 

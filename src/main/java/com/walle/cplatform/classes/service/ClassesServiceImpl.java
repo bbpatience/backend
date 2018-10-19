@@ -1,10 +1,10 @@
-package com.walle.cplatform.user.service.impl;
+package com.walle.cplatform.classes.service;
 
+import com.walle.cplatform.classes.pojos.OutputClassInfo;
+import com.walle.cplatform.classes.bean.ClassBean;
+import com.walle.cplatform.classes.mapper.ClassesMapper;
+import com.walle.cplatform.classes.service.impl.ClassesService;
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.user.bean.ClassBean;
-import com.walle.cplatform.user.mapper.ClassesMapper;
-import com.walle.cplatform.user.pojos.OutputClassInfo;
-import com.walle.cplatform.user.service.ClassesService;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;

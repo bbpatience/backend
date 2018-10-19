@@ -1,34 +1,34 @@
-package com.walle.cplatform.user.pojos;
+package com.walle.cplatform.classes.bean;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.walle.cplatform.user.bean.ClassBean;
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class OutputClassInfo {
-    @JsonProperty("id")
+@Table(name="t_classes")
+public class ClassBean implements Serializable {
+    private static final long serialVersionUID = 9129370215157758832L;
+    @Id
+    private Long id;
+
     private String uid;
 
-    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("state")
     private Integer state;
 
-    @JsonProperty("type")
     private Integer type;
 
-    @JsonProperty("create_dt")
     private Date createDt;
 
-    @JsonProperty("update_dt")
     private Date updateDt;
 
-    public String getUid() {
-        return uid;
+    public Long getId() {
+        return id;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,6 +45,14 @@ public class OutputClassInfo {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public Integer getType() {
@@ -69,14 +77,5 @@ public class OutputClassInfo {
 
     public void setUpdateDt(Date updateDt) {
         this.updateDt = updateDt;
-    }
-
-    public OutputClassInfo(ClassBean classBean) {
-        this.uid = classBean.getUid();
-        this.name = classBean.getName();
-        this.state = classBean.getState();
-        this.type = classBean.getType();
-        this.createDt = classBean.getCreateDt();
-        this.updateDt = classBean.getUpdateDt();
     }
 }

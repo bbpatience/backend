@@ -1,8 +1,7 @@
-package com.walle.cplatform.user.controller;
+package com.walle.cplatform.classes.controller;
 
+import com.walle.cplatform.classes.service.impl.ClassesService;
 import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.user.service.ClassesService;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
