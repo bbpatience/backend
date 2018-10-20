@@ -6,7 +6,7 @@ public enum UserState {
 
     DISABLE(1),
 
-    DELETED(2),;
+    DELETED(2);
 
     private int state;
 

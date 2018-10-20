@@ -5,9 +5,12 @@ import com.walle.cplatform.shiro.util.RedisCacheSessionDao;
 import com.walle.cplatform.user.enums.UserState;
 import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.mapper.UserMapper;
+import com.walle.cplatform.user.pojos.InputUserCreate;
 import com.walle.cplatform.user.service.UserService;
+import com.walle.cplatform.utils.DateTimeUtils;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
+import com.walle.cplatform.utils.ShortUuid;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -105,5 +108,39 @@ public class UserServiceImpl implements UserService {
         }
 
         return RestResult.generate(RestResultCode.COMMON_SUCCESS);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public RestResult createUser(InputUserCreate data) {
+        if (StringUtils.isEmpty(data.getUsername()) || StringUtils.isEmpty(data.getName()) ||
+            StringUtils.isEmpty(data.getPassword())) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        String username = data.getUsername();
+        UserBean user = this.getUserByUsername(username);
+        if (user != null) {
+            return RestResult.generate(RestResultCode.USER_USER_NAME_EXIST);
+        }
+
+        String uid = new ShortUuid.Builder().build().toString();
+
+        UserBean userBean = new UserBean();
+        userBean.setUsername(username);
+        userBean.setGender(data.getGender());
+        userBean.setBirthday(data.getBirthday());
+        userBean.setName(data.getName());
+        userBean.setMobile(username);
+//        userBean.setKeyword();
+//        userBean.setPassword();
+//        userBean.setPwdSalt();
+        userBean.setState(UserState.NORMAL.getState());
+        userBean.setType(data.getUserType());
+        userBean.setCreate_dt(DateTimeUtils.currentUTC());
+        userBean.setUpdate_dt(DateTimeUtils.currentUTC());
+        userBean.setUid(uid);
+
+        userMapper.insert(userBean);
+        return RestResult.success();
     }
 }

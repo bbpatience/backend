@@ -3,6 +3,8 @@ package com.walle.cplatform.utils;
 public class Constants {
     public static final long GLOBAL_SESSION_TIMEOUT = 604800000L;
 
+    /* user identity*/
+    public static final String USER_SUPER_ADMIN = "superadmin";
     /**
      * shiro
      */

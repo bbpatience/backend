@@ -5,8 +5,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.walle.cplatform.classes.pojos.InputClassInfo;
 import com.walle.cplatform.classes.service.ClassesService;
 import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,8 @@ public class ClassesController {
     }
 
     @GetMapping
-    @RequiresPermissions("*")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+//    @RequiresPermissions("*")
 //    @RequiresPermissions(value = {"*", "eab:manage"}, logical = Logical.OR)
     public @ResponseBody RestResult getClasses (
         @RequestParam(value = "state", defaultValue = "0", required = false) Integer state) {
@@ -45,14 +47,14 @@ public class ClassesController {
     }
 
     @GetMapping("/{uid}")
-    @RequiresPermissions("*")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult getClassesByUid(@PathVariable("uid") String uid) {
         logger.info("Get Class By Uid called.");
         return classesService.getClassByUid(uid);
     }
 
     @PutMapping("/add")
-    @RequiresPermissions("*")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult addClass(@RequestBody InputClassInfo info) {
         logger.info("add classes. {}", info.getName());
 
@@ -63,7 +65,7 @@ public class ClassesController {
     }
 
     @DeleteMapping("/{uid}")
-    @RequiresPermissions("*")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult delClass(@PathVariable("uid") String uid) {
         logger.info("delete class uid {}", uid);
 
@@ -71,7 +73,7 @@ public class ClassesController {
     }
 
     @PostMapping("/{uid}")
-    @RequiresPermissions("*")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult updateClass(@PathVariable("uid") String uid,
             @RequestBody InputClassInfo info) {
         logger.info("update classes. {}", info.getName());

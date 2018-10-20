@@ -2,10 +2,13 @@ package com.walle.cplatform.user.controller;
 
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.pojos.InputLogin;
+import com.walle.cplatform.user.pojos.InputUserCreate;
 import com.walle.cplatform.user.service.UserService;
 
 import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,7 @@ public class UserController {
 
 	@PostMapping(path="/login")
 	public @ResponseBody RestResult userLogin(@RequestBody InputLogin data) {
-        logger.info("User login called.");
+        logger.info("User login called. username:{}", data.getUsername());
 
         if (StringUtils.isEmpty(data.getUsername())) {
             return RestResult.generate(RestResultCode.USER_INVALID_USERNAME);
@@ -52,7 +55,14 @@ public class UserController {
     }
 
     @GetMapping(path="/exception")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody void exception() throws Exception {
         throw new IllegalAccessException("IllegalAccessException");
+    }
+
+    @PostMapping("/create")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult createUser(@RequestBody InputUserCreate data) {
+        return userService.createUser(data);
     }
 }

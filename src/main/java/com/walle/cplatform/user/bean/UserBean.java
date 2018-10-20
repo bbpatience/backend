@@ -1,7 +1,7 @@
 package com.walle.cplatform.user.bean;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -40,6 +40,12 @@ public class UserBean implements Serializable {
 
     @Column
     private String mobile;
+
+    @Column
+    private Integer gender;
+
+    @Column
+    private Date birthday;
 
     @Column
     private Integer state;
@@ -152,6 +158,22 @@ public class UserBean implements Serializable {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }
 

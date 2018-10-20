@@ -15,6 +15,7 @@ public enum RestResultCode {
     USER_NAME_PWD_NOT_MATCH(10104, "Username and Password not match."),
     USER_USER_DISABLED(10105, "User disabled."),
     USER_USER_NOT_LOGIN(10106, "User not login."),
+    USER_USER_NAME_EXIST(10107, "User name exists already."),
 
     /* class */
     CLASS_CLASS_NOT_FOUND(10201, "class not found");

@@ -1,7 +1,7 @@
 package com.walle.cplatform.classes.bean;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 

@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS `t_user` (
   `last_login_dt` DATETIME NULL COMMENT 'last login time',
   `name` VARCHAR(16) NULL COMMENT 'username',
   `mobile` VARCHAR(16) NULL COMMENT 'mobile',
+  `gender` int(4) NOT NULL DEFAULT '0' COMMENT '默认0为男，1为女',
+  `birthday` DATETIME NULL COMMENT '生日',
   `type` int(4) NOT NULL DEFAULT '0' COMMENT '默认0为老师，1为客户, 2为超管',
   `state` int(4) NOT NULL DEFAULT '0' COMMENT '默认0为激活，1为去激活，2为删除',
   `keyword` TEXT NULL COMMENT 'keyword',
