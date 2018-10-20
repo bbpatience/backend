@@ -16,6 +16,8 @@ public enum RestResultCode {
     USER_USER_DISABLED(10105, "User disabled."),
     USER_USER_NOT_LOGIN(10106, "User not login."),
     USER_USER_NAME_EXIST(10107, "User name exists already."),
+    USER_USER_NOT_AUTHORIZED(10108, "User not authorized."),
+    USER_USER_NOT_PERMITTED(10109, "User not permitted."),
 
     /* class */
     CLASS_CLASS_NOT_FOUND(10201, "class not found");

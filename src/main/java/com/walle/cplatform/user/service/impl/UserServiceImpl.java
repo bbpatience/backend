@@ -7,6 +7,7 @@ import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.pojos.InputUserCreate;
 import com.walle.cplatform.user.service.UserService;
+import com.walle.cplatform.utils.AuthenticationUtils;
 import com.walle.cplatform.utils.DateTimeUtils;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
@@ -124,16 +125,18 @@ public class UserServiceImpl implements UserService {
         }
 
         String uid = new ShortUuid.Builder().build().toString();
-
+        String salt = new ShortUuid.Builder().build().toString();
+        String password = AuthenticationUtils.encryptPassword(data.getPassword(), salt);
         UserBean userBean = new UserBean();
         userBean.setUsername(username);
         userBean.setGender(data.getGender());
         userBean.setBirthday(data.getBirthday());
         userBean.setName(data.getName());
         userBean.setMobile(username);
+
 //        userBean.setKeyword();
-//        userBean.setPassword();
-//        userBean.setPwdSalt();
+        userBean.setPassword(password);
+        userBean.setPwdSalt(salt);
         userBean.setState(UserState.NORMAL.getState());
         userBean.setType(data.getUserType());
         userBean.setCreate_dt(DateTimeUtils.currentUTC());
