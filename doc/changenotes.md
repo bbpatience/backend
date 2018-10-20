@@ -15,12 +15,16 @@
 | 2018.10.17 | authentication | apache shiro |
 | 2018.10.17 | authorization | apache shiro |
 | 2018.10.17 | session  | apache shiro & redis |
+| 2018.10.19 | classes api  | CRUD |
+| 2018.10.21 | user api  | CRUD login/logout |
 
 ### ToDo Structure
 * multi-module
-* db transaction
 * db design
 
 ### ToDo API
-* user logout
 * excel import & export
+* customer table
+* customer --- classes relation
+* teacher --- classes relation
+* statistics api (money , class time cost)
