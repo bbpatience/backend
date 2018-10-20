@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Throwable.class)
     public RestResult createUser(InputUserCreate data) {
         if (StringUtils.isEmpty(data.getUsername()) || StringUtils.isEmpty(data.getName()) ||
-            StringUtils.isEmpty(data.getPassword()) || data.getUserType() > UserType.CUSTOMER.getType() ||
+            data.getUserType() > UserType.CUSTOMER.getType() ||
             data.getUserType() < UserType.ADMIN.getType() ) {
             return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
         }
@@ -130,7 +130,15 @@ public class UserServiceImpl implements UserService {
 
         String uid = new ShortUuid.Builder().build().toString();
         String salt = new ShortUuid.Builder().build().toString();
-        String password = AuthenticationUtils.encryptPassword(data.getPassword(), salt);
+
+        // default password
+        String inputPassword;
+        if (StringUtils.isEmpty(data.getPassword())) {
+            inputPassword = username.substring(5); // last 6 chars as password.
+        } else {
+            inputPassword = data.getPassword();
+        }
+        String password = AuthenticationUtils.encryptPassword(inputPassword, salt);
         UserBean userBean = new UserBean();
         userBean.setUsername(username);
         userBean.setGender(data.getGender());
