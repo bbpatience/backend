@@ -151,7 +151,7 @@ public class ShiroServiceImpl implements ShiroService {
             Map<String, Object> map = new HashMap<>();
             map.put(Constants.DEFAULT_IDENTITY_KEY, userBean.getUsername());
             map.put(Constants.DEFAULT_PWD_KEY, userBean.getPassword());
-            map.put(Constants.DEFAULT_SALT_KEY, userBean.getPwdSalt());
+            map.put(Constants.DEFAULT_SALT_KEY, userBean.getPwdsalt());
             return map;
         }
         return null;

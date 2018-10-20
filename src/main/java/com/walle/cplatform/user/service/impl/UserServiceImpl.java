@@ -1,9 +1,11 @@
 package com.walle.cplatform.user.service.impl;
 
 import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.pojos.OutputId;
 import com.walle.cplatform.shiro.util.RedisCacheSessionDao;
 import com.walle.cplatform.user.enums.UserState;
 import com.walle.cplatform.user.bean.UserBean;
+import com.walle.cplatform.user.enums.UserType;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.pojos.InputUserCreate;
 import com.walle.cplatform.user.service.UserService;
@@ -28,6 +30,7 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -115,7 +118,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Throwable.class)
     public RestResult createUser(InputUserCreate data) {
         if (StringUtils.isEmpty(data.getUsername()) || StringUtils.isEmpty(data.getName()) ||
-            StringUtils.isEmpty(data.getPassword())) {
+            StringUtils.isEmpty(data.getPassword()) || data.getUserType() > UserType.CUSTOMER.getType() ||
+            data.getUserType() < UserType.ADMIN.getType() ) {
             return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
         }
         String username = data.getUsername();
@@ -136,7 +140,7 @@ public class UserServiceImpl implements UserService {
 
 //        userBean.setKeyword();
         userBean.setPassword(password);
-        userBean.setPwdSalt(salt);
+        userBean.setPwdsalt(salt);
         userBean.setState(UserState.NORMAL.getState());
         userBean.setType(data.getUserType());
         userBean.setCreate_dt(DateTimeUtils.currentUTC());
@@ -144,6 +148,79 @@ public class UserServiceImpl implements UserService {
         userBean.setUid(uid);
 
         userMapper.insert(userBean);
+        return RestResult.success(new OutputId(uid));
+    }
+
+    @Override
+    public RestResult updateUser(String uid, InputUserCreate data) {
+        UserBean user = getUserByUid(uid);
+        if (user == null) {
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        }
+        UserBean userBean = new UserBean();
+        if (!StringUtils.isEmpty(data.getPassword())) {
+            String password = AuthenticationUtils
+                .encryptPassword(data.getPassword(), user.getPwdsalt());
+            userBean.setPassword(password);
+        }
+        if (data.getGender() != null) {
+            userBean.setGender(data.getGender());
+        }
+        if (data.getBirthday() != null) {
+            userBean.setBirthday(data.getBirthday());
+        }
+        if (!StringUtils.isEmpty(data.getName())) {
+            userBean.setName(data.getName());
+//            userBean.setKeyword();
+        }
+        userBean.setUpdate_dt(DateTimeUtils.currentUTC());
+
+        Example example = new Example(UserBean.class);
+        example.createCriteria().andEqualTo("uid", uid);
+        userMapper.updateByExampleSelective(userBean, example);
         return RestResult.success();
+    }
+
+    @Override
+    public RestResult deleteUser(String uid) {
+        return null;
+    }
+
+    @Override
+    public RestResult getUser(String uid) {
+        return null;
+    }
+
+    @Override
+    public RestResult getUserList(Integer type) {
+        return null;
+    }
+
+    @Override
+    public RestResult updateUserState(String uid, Integer state) {
+        UserBean user = getUserByUid(uid);
+        if (user == null) {
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        }
+        if (state > UserState.DELETED.getState() || state < UserState.NORMAL.getState()) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        UserBean userBean = new UserBean();
+        userBean.setState(state);
+        userBean.setUpdate_dt(DateTimeUtils.currentUTC());
+
+        Example example = new Example(UserBean.class);
+        example.createCriteria().andEqualTo("uid", uid);
+        userMapper.updateByExampleSelective(userBean, example);
+        return RestResult.success();
+    }
+
+    private UserBean getUserByUid(String uid) {
+        if (StringUtils.isEmpty(uid)) {
+            return null;
+        }
+        UserBean userBean = new UserBean();
+        userBean.setUid(uid);
+        return userMapper.selectOne(userBean);
     }
 }

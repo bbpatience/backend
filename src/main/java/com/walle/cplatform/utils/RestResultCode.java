@@ -7,6 +7,7 @@ public enum RestResultCode {
     COMMON_NOT_IMPLEMENT(10002, "not implement"),
     COMMON_INVALID_PARAMETER(10003, "invalid parameter."),
     COMMON_NOT_FOUND(10004, "not found"),
+    COMMON_METHOD_NOT_SUPPORT(10005, "http method not support."),
 
     /* user */
     USER_INVALID_PASSWORD(10101, "Invalid Password"),

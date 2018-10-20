@@ -6,6 +6,7 @@ import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,6 +43,12 @@ public class ExceptionController {
     public @ResponseBody RestResult handleAuthorizedException(UnauthorizedException exception) {
         log.error(exception.getMessage());
         return RestResult.generate(RestResultCode.USER_USER_NOT_AUTHORIZED);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public @ResponseBody RestResult handleMethordNotSupportException(HttpRequestMethodNotSupportedException exception) {
+        log.error(exception.getMessage());
+        return RestResult.generate(RestResultCode.COMMON_METHOD_NOT_SUPPORT);
     }
 
     @ExceptionHandler(Exception.class)

@@ -104,12 +104,12 @@ public class UserBean implements Serializable {
         this.update_dt = update_dt;
     }
 
-    public String getPwdSalt() {
+    public String getPwdsalt() {
         return pwdsalt;
     }
 
-    public void setPwdSalt(String pwdSalt) {
-        this.pwdsalt = pwdSalt;
+    public void setPwdsalt(String pwdsalt) {
+        this.pwdsalt = pwdsalt;
     }
 
     public Date getLast_login_dt() {

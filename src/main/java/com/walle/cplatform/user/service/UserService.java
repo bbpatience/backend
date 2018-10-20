@@ -9,7 +9,17 @@ public interface UserService {
 
     RestResult logout();
 
-    RestResult createUser(InputUserCreate userInfo);
+    RestResult createUser(InputUserCreate data);
+
+    RestResult updateUser(String uid, InputUserCreate data);
+
+    RestResult updateUserState(String uid, Integer state);
+
+    RestResult deleteUser(String uid);
+
+    RestResult getUser(String uid);
+
+    RestResult getUserList(Integer type);
 
     UserBean getUserByUsername(String username);
 }

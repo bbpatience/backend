@@ -7,6 +7,7 @@ import com.walle.cplatform.classes.bean.ClassBean;
 import com.walle.cplatform.classes.mapper.ClassesMapper;
 import com.walle.cplatform.classes.service.ClassesService;
 import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.pojos.OutputId;
 import com.walle.cplatform.utils.DateTimeUtils;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShortUuid;
@@ -70,7 +71,8 @@ public class ClassesServiceImpl implements ClassesService {
     @Transactional(rollbackFor = Throwable.class)
     public RestResult addClass(String name) {
         ClassBean beanQuery = new ClassBean();
-        beanQuery.setUid(new ShortUuid.Builder().build().toString());
+        String uid = new ShortUuid.Builder().build().toString();
+        beanQuery.setUid(uid);
         beanQuery.setName(name);
         Date date = DateTimeUtils.currentUTC();
         beanQuery.setCreateDt(date);
@@ -78,7 +80,7 @@ public class ClassesServiceImpl implements ClassesService {
         beanQuery.setState(ClassState.NORMAL.getState());
         beanQuery.setType(ClassType.MASTER.getType());
         classesMapper.insert(beanQuery);
-        return RestResult.success();
+        return RestResult.success(new OutputId(uid));
     }
 
     @Override
@@ -87,6 +89,7 @@ public class ClassesServiceImpl implements ClassesService {
         logger.info("del Class By uid {}", uid);
         ClassBean bean = new ClassBean();
         bean.setState(ClassState.DELETED.getState());
+        bean.setUpdateDt(DateTimeUtils.currentUTC());
 
         Example example = new Example(ClassBean.class);
         example.createCriteria().andEqualTo("uid", uid);
@@ -109,6 +112,7 @@ public class ClassesServiceImpl implements ClassesService {
         }
         ClassBean bean = new ClassBean();
         bean.setName(newName);
+        bean.setUpdateDt(DateTimeUtils.currentUTC());
 
         Example example = new Example(ClassBean.class);
         example.createCriteria().andEqualTo("uid", uid);

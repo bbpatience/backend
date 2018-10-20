@@ -14,10 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,9 +64,41 @@ public class UserController {
         throw new IllegalAccessException("IllegalAccessException");
     }
 
-    @PostMapping("/create")
+    @PutMapping("/create")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult createUser(@RequestBody InputUserCreate data) {
         return userService.createUser(data);
+    }
+
+    @PostMapping("/{uid}")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult updateUser(@RequestBody InputUserCreate data, @PathVariable("uid") String uid) {
+        return userService.updateUser(uid, data);
+    }
+
+    @PostMapping("/{uid}/state")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult updateUserState(
+        @RequestParam(value = "state", defaultValue = "0") Integer state
+        , @PathVariable("uid") String uid) {
+        return userService.updateUserState(uid, state);
+    }
+
+    @DeleteMapping("/{uid}")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult deleteUser(@PathVariable("uid") String uid) {
+        return userService.deleteUser(uid);
+    }
+
+    @GetMapping("/{uid}")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult getUser(@PathVariable("uid") String uid) {
+        return userService.getUser(uid);
+    }
+
+    @GetMapping("/list")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public RestResult getUserList(@RequestParam(value = "type", defaultValue = "2", required = false) Integer type) {
+        return userService.getUserList(type);
     }
 }
