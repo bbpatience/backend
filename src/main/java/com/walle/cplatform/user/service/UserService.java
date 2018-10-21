@@ -19,7 +19,7 @@ public interface UserService {
 
     RestResult getUser(String uid);
 
-    RestResult getUserList(Integer type);
+    RestResult getUserList(Integer type, Integer state);
 
     UserBean getUserByUsername(String username);
 }

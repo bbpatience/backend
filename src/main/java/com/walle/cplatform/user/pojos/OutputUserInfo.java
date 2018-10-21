@@ -1,6 +1,7 @@
 package com.walle.cplatform.user.pojos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.walle.cplatform.user.bean.UserBean;
 import java.util.Date;
 
 public class OutputUserInfo {
@@ -20,8 +21,14 @@ public class OutputUserInfo {
     @JsonProperty("type")
     private Integer type;
 
-    @JsonProperty("update_dt")
-    private Date updateDt;
+    @JsonProperty("last_login_dt")
+    private Date loginDt;
+
+    @JsonProperty("gender")
+    private Integer gender;
+
+    @JsonProperty("birthday")
+    private Date birthday;
 
     public String getUid() {
         return uid;
@@ -63,11 +70,37 @@ public class OutputUserInfo {
         this.type = type;
     }
 
-    public Date getUpdateDt() {
-        return updateDt;
+    public Date getLoginDt() {
+        return loginDt;
     }
 
-    public void setUpdateDt(Date updateDt) {
-        this.updateDt = updateDt;
+    public void setLoginDt(Date loginDt) {
+        this.loginDt = loginDt;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public OutputUserInfo(UserBean bean) {
+        this.mobile = bean.getMobile();
+        this.name = bean.getName();
+        this.state = bean.getState();
+        this.type = bean.getType();
+        this.birthday = bean.getBirthday();
+        this.gender = bean.getGender();
+        this.loginDt = bean.getLast_login_dt();
     }
 }

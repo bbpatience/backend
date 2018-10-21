@@ -8,12 +8,15 @@ import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.enums.UserType;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.pojos.InputUserCreate;
+import com.walle.cplatform.user.pojos.OutputUserInfo;
 import com.walle.cplatform.user.service.UserService;
 import com.walle.cplatform.utils.AuthenticationUtils;
 import com.walle.cplatform.utils.DateTimeUtils;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
 import com.walle.cplatform.utils.ShortUuid;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -31,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -196,12 +200,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestResult getUser(String uid) {
-        return null;
+        UserBean user = getUserByUid(uid);
+        if (user == null) {
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        }
+        OutputUserInfo userInfo = new OutputUserInfo(user);
+        return RestResult.success().setData(userInfo);
     }
 
     @Override
-    public RestResult getUserList(Integer type) {
-        return null;
+    public RestResult getUserList(Integer type, Integer state) {
+        if (type != null && (type > UserType.CUSTOMER.getType() || type < UserType.ADMIN.getType()) ) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        if (state != null && (state > UserState.DELETED.getState() || state < UserState.NORMAL.getState()) ) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        Example example = new Example(UserBean.class);
+        Criteria criteria = example.createCriteria();
+        if (type != null) {
+            criteria.andEqualTo("type", type);
+        }
+        if (state != null) {
+            criteria.andEqualTo("state", state);
+        }
+        List<UserBean> users = userMapper.selectByExample(example);
+        List<OutputUserInfo> userInfos = new ArrayList<>();
+        users.forEach(user -> {
+            OutputUserInfo userInfo = new OutputUserInfo(user);
+            userInfos.add(userInfo);
+        });
+        return RestResult.success().setData(userInfos);
     }
 
     @Override

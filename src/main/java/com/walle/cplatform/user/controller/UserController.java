@@ -98,7 +98,8 @@ public class UserController {
 
     @GetMapping("/list")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
-    public RestResult getUserList(@RequestParam(value = "type", defaultValue = "2", required = false) Integer type) {
-        return userService.getUserList(type);
+    public RestResult getUserList(@RequestParam(value = "type", required = false) Integer type,
+        @RequestParam(value = "state", required = false) Integer state) {
+        return userService.getUserList(type, state);
     }
 }
