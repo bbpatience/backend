@@ -102,5 +102,6 @@ public class OutputUserInfo {
         this.birthday = bean.getBirthday();
         this.gender = bean.getGender();
         this.loginDt = bean.getLast_login_dt();
+        this.uid = bean.getUid();
     }
 }

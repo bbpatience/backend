@@ -195,7 +195,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestResult deleteUser(String uid) {
-        return null;
+        UserBean user = getUserByUid(uid);
+        if (user == null) {
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        } else if (user.getState() == UserState.DELETED.getState()){
+            return RestResult.generate(RestResultCode.USER_USER_DISABLED);
+        }
+        return updateUserState(uid, UserState.DELETED.getState());
     }
 
     @Override
