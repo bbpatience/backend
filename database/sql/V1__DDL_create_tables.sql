@@ -74,3 +74,28 @@ CREATE TABLE `t_permission` (
   `update_dt` datetime(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
+
+-- -----------------------------------------------------
+-- Table `t_customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `t_customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` VARCHAR(36) NOT NULL COMMENT 'uuid',
+  `no` int(11) NOT NULL COMMENT '编号',
+  `kindergarten` VARCHAR(64) NULL COMMENT '幼儿园名称',
+  `create_dt` DATETIME NULL COMMENT 'create date',
+  `update_dt` DATETIME NULL COMMENT 'update date',
+  `card_type` int(4) NOT NULL DEFAULT '0' COMMENT '默认0为创才，1为创智，2 bing卡',
+  `fee` int(11) NOT NULL COMMENT '费用',
+  `discount` int(11) NOT NULL COMMENT '折扣',
+  `gift` VARCHAR(36) NULL COMMENT '礼物',
+  `primary_class_hour` int(11) NOT NULL COMMENT '主课时',
+  `secondary_class_hour` int(11) NOT NULL COMMENT '辅课时',
+  `buy_dt` DATETIME NULL COMMENT '购买日期',
+  `expire_dt` DATETIME NULL COMMENT '到期日期',
+  `primary_learn_1` VARCHAR(32) NULL COMMENT '主修1',
+  `primary_learn_2` VARCHAR(32) NULL COMMENT '主修2',
+  `primary_learn_3` VARCHAR(32) NULL COMMENT '主修3',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `no_UNIQUE` (`no` ASC)
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
