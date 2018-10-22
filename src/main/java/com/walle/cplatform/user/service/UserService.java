@@ -1,25 +1,26 @@
 package com.walle.cplatform.user.service;
 
-import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.bean.UserBean;
 import com.walle.cplatform.user.pojos.InputUserCreate;
+import com.walle.cplatform.utils.RestResultCode;
+import java.util.List;
 
 public interface UserService {
-    RestResult login(String username, String password);
+    RestResultCode login(String username, String password);
 
-    RestResult logout();
+    RestResultCode logout();
 
-    RestResult createUser(InputUserCreate data);
+    String createUser(InputUserCreate data);
 
-    RestResult updateUser(String uid, InputUserCreate data);
+    RestResultCode updateUser(String uid, InputUserCreate data);
 
-    RestResult updateUserState(String uid, Integer state);
+    RestResultCode updateUserState(String uid, Integer state);
 
-    RestResult deleteUser(String uid);
+    RestResultCode deleteUser(String uid);
 
-    RestResult getUser(String uid);
+    UserBean getUser(String uid);
 
-    RestResult getUserList(Integer type, Integer state);
+    List<UserBean> getUserList(Integer type, Integer state);
 
     UserBean getUserByUsername(String username);
 }

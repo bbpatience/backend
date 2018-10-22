@@ -1,21 +1,16 @@
 package com.walle.cplatform.user.service.impl;
 
-import com.walle.cplatform.common.RestResult;
-import com.walle.cplatform.pojos.OutputId;
 import com.walle.cplatform.shiro.util.RedisCacheSessionDao;
 import com.walle.cplatform.user.enums.UserState;
 import com.walle.cplatform.user.bean.UserBean;
-import com.walle.cplatform.user.enums.UserType;
 import com.walle.cplatform.user.mapper.UserMapper;
 import com.walle.cplatform.user.pojos.InputUserCreate;
-import com.walle.cplatform.user.pojos.OutputUserInfo;
 import com.walle.cplatform.user.service.UserService;
 import com.walle.cplatform.utils.AuthenticationUtils;
 import com.walle.cplatform.utils.DateTimeUtils;
 import com.walle.cplatform.utils.RestResultCode;
 import com.walle.cplatform.utils.ShiroUtils;
 import com.walle.cplatform.utils.ShortUuid;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -51,17 +46,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public RestResult login(String username, String password) {
+    public RestResultCode login(String username, String password) {
         UserBean user = getUserByUsername(username);
 
         if (user == null) {
             logger.info("login fail.");
-            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+            return RestResultCode.USER_USER_NOT_FOUND;
         }
 
         if (!checkUserState(user)) {
             logger.info("login fail.");
-            return RestResult.generate(RestResultCode.USER_USER_DISABLED);
+            return RestResultCode.USER_USER_DISABLED;
         }
         RestResultCode rspCode = RestResultCode.COMMON_SUCCESS;
         AuthenticationToken token = new UsernamePasswordToken(username, password);
@@ -81,7 +76,7 @@ public class UserServiceImpl implements UserService {
             logger.error("login failure", e);
             rspCode = RestResultCode.COMMON_SERVER_ERROR;
         }
-        return RestResult.generate(rspCode);
+        return rspCode;
     }
 
     private boolean checkUserState(UserBean user) {
@@ -100,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public RestResult logout() {
+    public RestResultCode logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             String username = (String) subject.getPrincipal();
@@ -115,22 +110,12 @@ public class UserServiceImpl implements UserService {
             logger.info("logout, username={}", username);
         }
 
-        return RestResult.generate(RestResultCode.COMMON_SUCCESS);
+        return RestResultCode.COMMON_SUCCESS;
     }
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public RestResult createUser(InputUserCreate data) {
-        if (StringUtils.isEmpty(data.getUsername()) || StringUtils.isEmpty(data.getName()) ||
-            data.getUserType() > UserType.CUSTOMER.getType() ||
-            data.getUserType() < UserType.ADMIN.getType() ) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
-        }
-        String username = data.getUsername();
-        UserBean user = this.getUserByUsername(username);
-        if (user != null) {
-            return RestResult.generate(RestResultCode.USER_USER_NAME_EXIST);
-        }
+    public String createUser(InputUserCreate data) {
 
         String uid = new ShortUuid.Builder().build().toString();
         String salt = new ShortUuid.Builder().build().toString();
@@ -138,17 +123,17 @@ public class UserServiceImpl implements UserService {
         // default password
         String inputPassword;
         if (StringUtils.isEmpty(data.getPassword())) {
-            inputPassword = username.substring(5); // last 6 chars as password.
+            inputPassword = data.getUsername().substring(5); // last 6 chars as password.
         } else {
             inputPassword = data.getPassword();
         }
         String password = AuthenticationUtils.encryptPassword(inputPassword, salt);
         UserBean userBean = new UserBean();
-        userBean.setUsername(username);
+        userBean.setUsername(data.getUsername());
         userBean.setGender(data.getGender());
         userBean.setBirthday(data.getBirthday());
         userBean.setName(data.getName());
-        userBean.setMobile(username);
+        userBean.setMobile(data.getUsername());
 
 //        userBean.setKeyword();
         userBean.setPassword(password);
@@ -160,14 +145,14 @@ public class UserServiceImpl implements UserService {
         userBean.setUid(uid);
 
         userMapper.insert(userBean);
-        return RestResult.success(new OutputId(uid));
+        return uid;
     }
 
     @Override
-    public RestResult updateUser(String uid, InputUserCreate data) {
+    public RestResultCode updateUser(String uid, InputUserCreate data) {
         UserBean user = getUserByUid(uid);
         if (user == null) {
-            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+            return RestResultCode.USER_USER_NOT_FOUND;
         }
         UserBean userBean = new UserBean();
         if (!StringUtils.isEmpty(data.getPassword())) {
@@ -190,38 +175,27 @@ public class UserServiceImpl implements UserService {
         Example example = new Example(UserBean.class);
         example.createCriteria().andEqualTo("uid", uid);
         userMapper.updateByExampleSelective(userBean, example);
-        return RestResult.success();
+        return RestResultCode.COMMON_SUCCESS;
     }
 
     @Override
-    public RestResult deleteUser(String uid) {
+    public RestResultCode deleteUser(String uid) {
         UserBean user = getUserByUid(uid);
         if (user == null) {
-            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+            return RestResultCode.USER_USER_NOT_FOUND;
         } else if (user.getState() == UserState.DELETED.getState()){
-            return RestResult.generate(RestResultCode.USER_USER_DISABLED);
+            return RestResultCode.USER_USER_DISABLED;
         }
         return updateUserState(uid, UserState.DELETED.getState());
     }
 
     @Override
-    public RestResult getUser(String uid) {
-        UserBean user = getUserByUid(uid);
-        if (user == null) {
-            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
-        }
-        OutputUserInfo userInfo = new OutputUserInfo(user);
-        return RestResult.success().setData(userInfo);
+    public UserBean getUser(String uid) {
+        return getUserByUid(uid);
     }
 
     @Override
-    public RestResult getUserList(Integer type, Integer state) {
-        if (type != null && (type > UserType.CUSTOMER.getType() || type < UserType.ADMIN.getType()) ) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
-        }
-        if (state != null && (state > UserState.DELETED.getState() || state < UserState.NORMAL.getState()) ) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
-        }
+    public List<UserBean> getUserList(Integer type, Integer state) {
         Example example = new Example(UserBean.class);
         Criteria criteria = example.createCriteria();
         if (type != null) {
@@ -230,23 +204,17 @@ public class UserServiceImpl implements UserService {
         if (state != null) {
             criteria.andEqualTo("state", state);
         }
-        List<UserBean> users = userMapper.selectByExample(example);
-        List<OutputUserInfo> userInfos = new ArrayList<>();
-        users.forEach(user -> {
-            OutputUserInfo userInfo = new OutputUserInfo(user);
-            userInfos.add(userInfo);
-        });
-        return RestResult.success().setData(userInfos);
+        return userMapper.selectByExample(example);
     }
 
     @Override
-    public RestResult updateUserState(String uid, Integer state) {
+    public RestResultCode updateUserState(String uid, Integer state) {
         UserBean user = getUserByUid(uid);
         if (user == null) {
-            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+            return RestResultCode.USER_USER_NOT_FOUND;
         }
         if (state > UserState.DELETED.getState() || state < UserState.NORMAL.getState()) {
-            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+            return RestResultCode.COMMON_INVALID_PARAMETER;
         }
         UserBean userBean = new UserBean();
         userBean.setState(state);
@@ -255,7 +223,7 @@ public class UserServiceImpl implements UserService {
         Example example = new Example(UserBean.class);
         example.createCriteria().andEqualTo("uid", uid);
         userMapper.updateByExampleSelective(userBean, example);
-        return RestResult.success();
+        return RestResultCode.COMMON_SUCCESS;
     }
 
     private UserBean getUserByUid(String uid) {

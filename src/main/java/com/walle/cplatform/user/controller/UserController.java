@@ -3,11 +3,10 @@ package com.walle.cplatform.user.controller;
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.pojos.InputLogin;
 import com.walle.cplatform.user.pojos.InputUserCreate;
-import com.walle.cplatform.user.service.UserService;
+import com.walle.cplatform.user.service.UserApplication;
 
 import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +30,11 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	private UserService userService;
+	private UserApplication userApplication;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserApplication userApplication) {
+        this.userApplication = userApplication;
     }
 
 	@PostMapping(path="/login")
@@ -49,13 +48,13 @@ public class UserController {
         if (StringUtils.isEmpty(data.getPassword())) {
             return RestResult.generate(RestResultCode.USER_INVALID_PASSWORD);
         }
-		return userService.login(data.getUsername(), data.getPassword());
+		return userApplication.login(data.getUsername(), data.getPassword());
 	}
 
     @PostMapping(path="/logout")
     public @ResponseBody RestResult userLogout() {
         logger.info("User logout called.");
-        return userService.logout();
+        return userApplication.logout();
     }
 
     @GetMapping(path="/exception")
@@ -67,13 +66,13 @@ public class UserController {
     @PutMapping("/create")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult createUser(@RequestBody InputUserCreate data) {
-        return userService.createUser(data);
+        return userApplication.createUser(data);
     }
 
     @PostMapping("/{uid}")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult updateUser(@RequestBody InputUserCreate data, @PathVariable("uid") String uid) {
-        return userService.updateUser(uid, data);
+        return userApplication.updateUser(uid, data);
     }
 
     @PostMapping("/{uid}/state")
@@ -81,25 +80,25 @@ public class UserController {
     public RestResult updateUserState(
         @RequestParam(value = "state", defaultValue = "0") Integer state
         , @PathVariable("uid") String uid) {
-        return userService.updateUserState(uid, state);
+        return userApplication.updateUserState(uid, state);
     }
 
     @DeleteMapping("/{uid}")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult deleteUser(@PathVariable("uid") String uid) {
-        return userService.deleteUser(uid);
+        return userApplication.deleteUser(uid);
     }
 
     @GetMapping("/{uid}")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult getUser(@PathVariable("uid") String uid) {
-        return userService.getUser(uid);
+        return userApplication.getUser(uid);
     }
 
     @GetMapping("/list")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public RestResult getUserList(@RequestParam(value = "type", required = false) Integer type,
         @RequestParam(value = "state", required = false) Integer state) {
-        return userService.getUserList(type, state);
+        return userApplication.getUserList(type, state);
     }
 }
