@@ -1,15 +1,16 @@
 package com.walle.cplatform.classes.service;
 
-import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.classes.bean.ClassBean;
+import java.util.List;
 
 public interface ClassesService {
-    RestResult getClasses(Integer state);
+    List<ClassBean> getClasses(Integer state);
 
-    RestResult getClassByUid(String uid);
+    ClassBean getClassByUid(String uid);
 
-    RestResult addClass(String name);
+    String addClass(String name);
 
-    RestResult delClass(String uid);
+    int delClass(String uid);
 
-    RestResult updateClass(String newName, String uid);
+    int updateClass(String newName, String uid);
 }

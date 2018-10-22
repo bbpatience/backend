@@ -3,7 +3,7 @@ package com.walle.cplatform.classes.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.walle.cplatform.classes.pojos.InputClassInfo;
-import com.walle.cplatform.classes.service.ClassesService;
+import com.walle.cplatform.classes.service.ClassesApplication;
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.utils.Constants;
 import com.walle.cplatform.utils.RestResultCode;
@@ -29,11 +29,11 @@ public class ClassesController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassesController.class);
 
-    private ClassesService classesService;
+    private ClassesApplication classesApplication;
 
     @Autowired
-    public ClassesController(ClassesService classesService) {
-        this.classesService = classesService;
+    public ClassesController(ClassesApplication classesApplication) {
+        this.classesApplication = classesApplication;
     }
 
     @GetMapping
@@ -41,16 +41,16 @@ public class ClassesController {
 //    @RequiresPermissions("*")
 //    @RequiresPermissions(value = {"*", "eab:manage"}, logical = Logical.OR)
     public @ResponseBody RestResult getClasses (
-        @RequestParam(value = "state", defaultValue = "0", required = false) Integer state) {
+        @RequestParam(value = "state", required = false) Integer state) {
         logger.info("Get Classes called. {}", state);
-        return classesService.getClasses(state);
+        return classesApplication.getClasses(state);
     }
 
     @GetMapping("/{uid}")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult getClassesByUid(@PathVariable("uid") String uid) {
         logger.info("Get Class By Uid called.");
-        return classesService.getClassByUid(uid);
+        return classesApplication.getClassByUid(uid);
     }
 
     @PutMapping("/add")
@@ -61,7 +61,7 @@ public class ClassesController {
         if (StringUtils.isEmpty(info.getName())) {
             return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
         }
-        return classesService.addClass(info.getName());
+        return classesApplication.addClass(info.getName());
     }
 
     @DeleteMapping("/{uid}")
@@ -69,7 +69,7 @@ public class ClassesController {
     public @ResponseBody RestResult delClass(@PathVariable("uid") String uid) {
         logger.info("delete class uid {}", uid);
 
-        return classesService.delClass(uid);
+        return classesApplication.delClass(uid);
     }
 
     @PostMapping("/{uid}")
@@ -81,6 +81,6 @@ public class ClassesController {
         if (StringUtils.isEmpty(info.getName())) {
             return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
         }
-        return classesService.updateClass(info.getName(), uid);
+        return classesApplication.updateClass(info.getName(), uid);
     }
 }

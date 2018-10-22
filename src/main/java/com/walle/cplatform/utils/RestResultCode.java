@@ -21,7 +21,8 @@ public enum RestResultCode {
     USER_USER_NOT_PERMITTED(10109, "User not permitted."),
 
     /* class */
-    CLASS_CLASS_NOT_FOUND(10201, "class not found");
+    CLASS_CLASS_NOT_FOUND(10201, "class not found"),
+    CLASS_CLASS_DELETED_ALREADY(10202, "class already deleted.");
 
     private int code;
     private String msg;
