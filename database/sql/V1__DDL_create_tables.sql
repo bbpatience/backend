@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `t_customer` (
   `primary_learn_1` VARCHAR(32) NULL COMMENT '主修1',
   `primary_learn_2` VARCHAR(32) NULL COMMENT '主修2',
   `primary_learn_3` VARCHAR(32) NULL COMMENT '主修3',
+  `comment` VARCHAR(64) NULL COMMENT '附加信息',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `no_UNIQUE` (`no` ASC)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
