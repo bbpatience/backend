@@ -41,7 +41,7 @@ public class ClassesController {
 //    @RequiresPermissions("*")
 //    @RequiresPermissions(value = {"*", "eab:manage"}, logical = Logical.OR)
     public @ResponseBody RestResult getClasses (
-        @RequestParam(value = "state", required = false) Integer state) {
+        @RequestParam(value = "state", defaultValue = "0", required = false) Integer state) {
         logger.info("Get Classes called. {}", state);
         return classesApplication.getClasses(state);
     }
