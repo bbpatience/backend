@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="t_user")
+@Table(name="t_customer")
 public class CustomerBean implements Serializable {
 
     private static final long serialVersionUID = 9129371215147758834L;

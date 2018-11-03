@@ -58,7 +58,6 @@ public class UserController {
     }
 
     @GetMapping(path="/exception")
-    @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody void exception() throws Exception {
         throw new IllegalAccessException("IllegalAccessException");
     }

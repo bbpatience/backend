@@ -3,6 +3,7 @@ package com.walle.cplatform;
 import com.walle.cplatform.common.RestResult;
 import com.walle.cplatform.user.controller.UserController;
 import com.walle.cplatform.user.pojos.InputLogin;
+import com.walle.cplatform.user.service.UserApplication;
 import com.walle.cplatform.user.service.UserService;
 import com.walle.cplatform.utils.JacksonUtils;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class MockMvcUserBeanCtrlTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserService userService;
+    private UserApplication userApplication;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -60,7 +61,7 @@ public class MockMvcUserBeanCtrlTest {
         input.setPassword("patience123");
 
         RestResult expect = RestResult.success();
-        when(userService.login("123", "123")).thenReturn(RestResult.success());
+        when(userApplication.login("123", "123")).thenReturn(RestResult.success());
         RequestBuilder requestBuilder = post("/user/login")
             .contentType(MediaType.APPLICATION_JSON).content(JacksonUtils.toJSon(input));
         this.mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isOk());
@@ -74,7 +75,7 @@ public class MockMvcUserBeanCtrlTest {
     public void testUserLogout() throws Exception {
 
         RestResult expect = RestResult.success();
-        when(userService.logout()).thenReturn(RestResult.success());
+        when(userApplication.logout()).thenReturn(RestResult.success());
         RequestBuilder requestBuilder = post("/user/logout")
             .contentType(MediaType.APPLICATION_JSON);
         this.mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isOk()).andExpect(
