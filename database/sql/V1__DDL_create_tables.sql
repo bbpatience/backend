@@ -93,9 +93,7 @@ CREATE TABLE IF NOT EXISTS `t_customer` (
   `secondary_class_hour` int(11) NOT NULL COMMENT '辅课时',
   `buy_dt` DATETIME NULL COMMENT '购买日期',
   `expire_dt` DATETIME NULL COMMENT '到期日期',
-  `primary_learn_1` VARCHAR(32) NULL COMMENT '主修1',
-  `primary_learn_2` VARCHAR(32) NULL COMMENT '主修2',
-  `primary_learn_3` VARCHAR(32) NULL COMMENT '主修3',
+  `primary_learn` VARCHAR(256) NULL COMMENT '主修列表',
   `comment` VARCHAR(64) NULL COMMENT '附加信息',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `no_UNIQUE` (`no` ASC)

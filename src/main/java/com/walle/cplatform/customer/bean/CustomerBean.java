@@ -54,13 +54,7 @@ public class CustomerBean implements Serializable {
     private Date expire_dt;
 
     @Column
-    private String primary_learn_1;
-
-    @Column
-    private String primary_learn_2;
-
-    @Column
-    private String primary_learn_3;
+    private String primary_learn;
 
     @Column
     private String comment;
@@ -177,28 +171,12 @@ public class CustomerBean implements Serializable {
         this.expire_dt = expire_dt;
     }
 
-    public String getPrimary_learn_1() {
-        return primary_learn_1;
+    public String getPrimary_learn() {
+        return primary_learn;
     }
 
-    public void setPrimary_learn_1(String primary_learn_1) {
-        this.primary_learn_1 = primary_learn_1;
-    }
-
-    public String getPrimary_learn_2() {
-        return primary_learn_2;
-    }
-
-    public void setPrimary_learn_2(String primary_learn_2) {
-        this.primary_learn_2 = primary_learn_2;
-    }
-
-    public String getPrimary_learn_3() {
-        return primary_learn_3;
-    }
-
-    public void setPrimary_learn_3(String primary_learn_3) {
-        this.primary_learn_3 = primary_learn_3;
+    public void setPrimary_learn(String primary_learn) {
+        this.primary_learn = primary_learn;
     }
 
     public String getComment() {
