@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -56,17 +58,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public RestResultCode deleteCustomer(String uid) {
-        return null;
-    }
-
-    @Override
     public CustomerBean getCustomer(String uid) {
-        return null;
+        return getCustomerByUid(uid);
     }
 
     @Override
-    public List<CustomerBean> getCustomerList(Integer state) {
-        return null;
+    public List<CustomerBean> getCustomerList() {
+        return customerMapper.selectAll();
+    }
+
+    @Override
+    public boolean isNumberExists(long num) {
+        Example example = new Example(CustomerBean.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("no", num);
+
+        List<CustomerBean> beans = customerMapper.selectByExample(example);
+
+        return beans.size() > 0;
+    }
+
+    private CustomerBean getCustomerByUid(String uid) {
+        if (StringUtils.isEmpty(uid)) {
+            return null;
+        }
+        CustomerBean bean = new CustomerBean();
+        bean.setUid(uid);
+        return customerMapper.selectOne(bean);
     }
 }

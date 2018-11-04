@@ -50,6 +50,10 @@ public class CustomerApplicationImpl implements CustomerApplication {
         if (user != null) {
             return RestResult.generate(RestResultCode.USER_USER_NAME_EXIST);
         }
+        //check number exists.
+        if (customerService.isNumberExists(data.getNumber())) {
+            return RestResult.generate(RestResultCode.CUSTOMER_NUMBER_EXISTS);
+        }
         String uid = userService.createUser(data);
         return RestResult.success(new OutputId(customerService.createCustomer(uid, data)));
     }
@@ -63,12 +67,7 @@ public class CustomerApplicationImpl implements CustomerApplication {
     public RestResult deleteCustomer(String uid) {
         RestResultCode result = userService.deleteUser(uid);
         if (RestResultCode.COMMON_SUCCESS == result) {
-            RestResultCode resultCode = customerService.deleteCustomer(uid);
-            if (RestResultCode.COMMON_SUCCESS == resultCode) {
-                return RestResult.success();
-            } else {
-                return RestResult.generate(resultCode);
-            }
+            return RestResult.success();
         } else {
             return RestResult.generate(result);
         }
@@ -77,6 +76,9 @@ public class CustomerApplicationImpl implements CustomerApplication {
     @Override
     public RestResult getCustomer(String uid) {
         UserBean user = userService.getUser(uid);
+        if (user == null) {
+            return RestResult.generate(RestResultCode.USER_USER_NOT_FOUND);
+        }
         CustomerBean customer = customerService.getCustomer(uid);
         OutputCustomerInfo customerInfo = new OutputCustomerInfo(customer, user);
         return RestResult.success().setData(customerInfo);

@@ -22,7 +22,10 @@ public enum RestResultCode {
 
     /* class */
     CLASS_CLASS_NOT_FOUND(10201, "class not found"),
-    CLASS_CLASS_DELETED_ALREADY(10202, "class already deleted.");
+    CLASS_CLASS_DELETED_ALREADY(10202, "class already deleted."),
+
+    /* customer */
+    CUSTOMER_NUMBER_EXISTS(10301, "Customer number exists.");
 
     private int code;
     private String msg;
