@@ -98,3 +98,16 @@ CREATE TABLE IF NOT EXISTS `t_customer` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `no_UNIQUE` (`no` ASC)
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table `t_log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `t_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` VARCHAR(36) NOT NULL COMMENT '客户id',
+  `tid` VARCHAR(36) NOT NULL COMMENT '老师id',
+  `cid` VARCHAR(36) NOT NULL COMMENT '课程id',
+  `date` DATETIME NULL COMMENT '上课时间',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `no_UNIQUE` (`no` ASC)
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
