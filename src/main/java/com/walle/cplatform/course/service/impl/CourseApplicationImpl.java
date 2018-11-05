@@ -1,0 +1,63 @@
+package com.walle.cplatform.course.service.impl;
+
+import com.walle.cplatform.common.RestResult;
+import com.walle.cplatform.course.bean.CourseBean;
+import com.walle.cplatform.course.pojos.InputCourseInfo;
+import com.walle.cplatform.course.pojos.OutputCourseInfo;
+import com.walle.cplatform.course.service.CourseApplication;
+import com.walle.cplatform.course.service.CourseService;
+import com.walle.cplatform.pojos.OutputId;
+import com.walle.cplatform.utils.RestResultCode;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+/**
+ * @author: bbpatience
+ * @date: 2018/11/5
+ * @description: CourseApplicationImpl
+ **/
+@Service
+public class CourseApplicationImpl implements CourseApplication {
+
+    private CourseService courseService;
+
+    @Autowired
+    public CourseApplicationImpl(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    @Override
+    public RestResult getCourses(Integer type, String uid) {
+        return null;
+    }
+
+    @Override
+    public RestResult getCourseById(long id) {
+        return null;
+    }
+
+    @Override
+    public RestResult addCourse(InputCourseInfo info) {
+        if (StringUtils.isEmpty(info.getCid()) ||
+            StringUtils.isEmpty(info.getTid()) ||
+            StringUtils.isEmpty(info.getUid())) {
+            return RestResult.generate(RestResultCode.COMMON_INVALID_PARAMETER);
+        }
+        int id = courseService.addCourse(info);
+        return RestResult.success(new OutputId(String.valueOf(id)));
+    }
+
+    @Override
+    public RestResult getCourses(long from, long to) {
+        List<CourseBean> beans = courseService.getCourses(from, to);
+        List<OutputCourseInfo> result = new ArrayList<>();
+        beans.forEach(bean -> {
+            OutputCourseInfo info = new OutputCourseInfo(bean.getUid(), bean.getCid(), bean.getTid(), bean.getDate());
+            result.add(info);
+        });
+        return RestResult.success(result);
+    }
+}
