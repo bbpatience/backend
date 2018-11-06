@@ -5,6 +5,9 @@ import java.util.Date;
 
 public class OutputCourseInfo {
 
+    @JsonProperty("id")
+    private Long id;
+
     @JsonProperty("customer_id")
     private String uid;
 
@@ -49,10 +52,19 @@ public class OutputCourseInfo {
         this.date = date;
     }
 
-    public OutputCourseInfo(String uid, String cid, String tid, Date date) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public OutputCourseInfo(String uid, String cid, String tid, Date date, long id) {
         this.uid = uid;
         this.cid = cid;
         this.tid = tid;
         this.date = date;
+        this.id = id;
     }
 }

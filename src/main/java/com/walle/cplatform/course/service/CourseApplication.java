@@ -9,8 +9,9 @@ import com.walle.cplatform.course.pojos.InputCourseInfo;
  * @description: CourseApplicationImpl
  **/
 public interface CourseApplication {
-    RestResult getCourses(Integer type, String uid);
+    RestResult getCourses(Integer type, String uid, long from, long to);
     RestResult getCourseById(long id);
     RestResult addCourse(InputCourseInfo info);
     RestResult getCourses(long from, long to);
+    RestResult delCourseById(long id);
 }

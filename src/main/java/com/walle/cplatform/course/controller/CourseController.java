@@ -10,6 +10,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,13 +42,15 @@ public class CourseController {
         return courseApplication.getCourses(fromTime, toTime);
     }
 
-    @GetMapping
+    @GetMapping("/{uid}/list")
     @RequiresRoles(Constants.USER_SUPER_ADMIN)
     public @ResponseBody RestResult getCourses (
+        @PathVariable("uid") String uid,
         @RequestParam(value = "type", defaultValue = "0") Integer type,
-        @RequestParam(value = "uid") String uid) {
+        @RequestParam("from") long fromTime,
+        @RequestParam("to") long toTime) {
         logger.info("Get Courses called. {}", type);
-        return courseApplication.getCourses(type, uid);
+        return courseApplication.getCourses(type, uid, fromTime, toTime);
     }
 
     @GetMapping("/{id}")
@@ -55,6 +58,13 @@ public class CourseController {
     public @ResponseBody RestResult getCourseById(@PathVariable("id") long id) {
         logger.info("Get Course By id called.");
         return courseApplication.getCourseById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @RequiresRoles(Constants.USER_SUPER_ADMIN)
+    public @ResponseBody RestResult delCourseById(@PathVariable("id") long id) {
+        logger.info("Delete Course By id called.");
+        return courseApplication.delCourseById(id);
     }
 
     @PostMapping

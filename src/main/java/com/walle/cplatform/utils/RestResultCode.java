@@ -25,7 +25,14 @@ public enum RestResultCode {
     CLASS_CLASS_DELETED_ALREADY(10202, "class already deleted."),
 
     /* customer */
-    CUSTOMER_NUMBER_EXISTS(10301, "Customer number exists.");
+    CUSTOMER_NUMBER_EXISTS(10301, "Customer number exists."),
+
+    /* customer */
+    LOG_TEACHER_ID_INVALID(10401, "teacher id invalid."),
+    LOG_CLASS_ID_INVALID(10402, "class id invalid."),
+    LOG_CUSTOMER_ID_INVALID(10403, "Customer id invalid."),
+    LOG_NOT_FOUND(10404, "Course not found."),
+    ;
 
     private int code;
     private String msg;
